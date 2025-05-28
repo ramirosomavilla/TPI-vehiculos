@@ -1,5 +1,5 @@
 # Trabajo Práctico Integrador  
-## Backend de Aplicaciones 2024
+## Backend de Aplicaciones 2025
 
 ---
 
