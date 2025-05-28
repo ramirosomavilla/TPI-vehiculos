@@ -11,8 +11,8 @@
         <relativePath/>
     </parent>
 
-    <groupId>serviciovehiculos</groupId>
-    <artifactId>servicio-vehiculos</artifactId>
+    <groupId>serviciousuarios</groupId>
+    <artifactId>servicio-usuarios</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>

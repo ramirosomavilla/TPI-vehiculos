@@ -11,7 +11,7 @@
         <relativePath/>
     </parent>
 
-    <groupId>org.example</groupId>
+    <groupId>servicionotificaciones</groupId>
     <artifactId>servicio-notificaciones</artifactId>
     <version>1.0-SNAPSHOT</version>
 
