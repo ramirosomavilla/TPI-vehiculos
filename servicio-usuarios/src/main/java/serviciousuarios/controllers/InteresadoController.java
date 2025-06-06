@@ -15,7 +15,7 @@ import serviciousuarios.dtos.InteresadoDTO;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/interesados")
+@RequestMapping("/api/usuarios/interesados")
 @Tag(name = "Interesado", description = "CRUD operations for Interesado")
 public class InteresadoController {
   @Autowired
