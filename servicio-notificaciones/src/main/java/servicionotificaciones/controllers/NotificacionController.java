@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/notificaciones")
+@RequestMapping("/api/v1/notificaciones")
 public class NotificacionController {
     private static final Logger logger = LoggerFactory.getLogger(NotificacionController.class);
 

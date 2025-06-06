@@ -19,15 +19,15 @@ public class GWConfig {
                                         @Value("${tpi-vehiculos-api-gw.url-microservicio-usuarios}") String uriUsuarios) {
         return builder.routes()
                 // Ruteo al Microservicio de Notificaciones
-                .route(p -> p.path("/api/notificaciones/**").uri(uriNotificaciones))
+                .route(p -> p.path("/api/v1/notificaciones/**").uri(uriNotificaciones))
                 // Ruteo al Microservicio de Pruebas
-                .route(p -> p.path("/api/pruebas/**").uri(uriPruebas))
+                .route(p -> p.path("/api/v1/pruebas/**").uri(uriPruebas))
                 // Ruteo al Microservicio de Reportes
-                .route(p -> p.path("/api/reportes/**").uri(uriReportes))
+                .route(p -> p.path("/api/v1/reportes/**").uri(uriReportes))
                 // Ruteo al Microservicio de Vehiculos
-                .route(p -> p.path("/api/vehiculos/**").uri(uriVehiculos))
+                .route(p -> p.path("/api/v1/vehiculos/**").uri(uriVehiculos))
                 // Ruteo al Microservicio de Usuarios
-                .route(p -> p.path("/api/usuarios/**").uri(uriUsuarios))
+                .route(p -> p.path("/api/v1/usuarios/**").uri(uriUsuarios))
                 .build();
 
     }

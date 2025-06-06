@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/reportes")
+@RequestMapping("/api/v1/reportes")
 public class ReporteController {
     private static final Logger logger = LoggerFactory.getLogger(ReporteController.class);
 
