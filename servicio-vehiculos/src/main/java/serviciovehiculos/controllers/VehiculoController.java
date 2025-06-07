@@ -1,23 +1,60 @@
 package serviciovehiculos.controllers;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import serviciovehiculos.dtos.VehiculoDTO;
+import serviciovehiculos.entities.Vehiculo;
+import serviciovehiculos.services.VehiculoService;
 
 @RestController
-@RequestMapping("/vehiculos")
+@RequestMapping("/api/v1/vehiculos")
 public class VehiculoController {
-    private static final Logger logger = LoggerFactory.getLogger(VehiculoController.class);
-
-    @PostMapping
-    public String recibirVehiculo(@RequestBody(required = false) String body) {
-        logger.info("¡Petición recibida en /vehiculos! Cuerpo: {}", body);
-        return "Vehículo recibido";
-    }
+    @Autowired
+    private VehiculoService vehiculoService;
 
     @GetMapping
-    public String test() {
-        logger.info("¡Petición GET recibida en /vehiculos!");
-        return "Servicio de vehículos activo";
+    public Iterable<VehiculoDTO> getAll() {
+        return vehiculoService.findAll().stream().map(this::toDTO).toList();
+    }
+
+    @GetMapping("/api/v1/vehiculos/{id}")
+    public VehiculoDTO getById(@PathVariable Integer id) {
+        return vehiculoService.findById(id).map(this::toDTO).orElse(null);
+    }
+
+    @PostMapping
+    public VehiculoDTO create(@RequestBody VehiculoDTO dto) {
+        Vehiculo v = toEntity(dto);
+        return toDTO(vehiculoService.save(v));
+    }
+
+    @DeleteMapping("/api/v1/vehiculos/{id}")
+    public void delete(@PathVariable Integer id) {
+        vehiculoService.deleteById(id);
+    }
+
+    private VehiculoDTO toDTO(Vehiculo v) {
+        VehiculoDTO dto = new VehiculoDTO();
+        dto.setId(v.getId());
+        dto.setPatente(v.getPatente());
+        dto.setIdModelo(v.getIdModelo());
+        dto.setAnio(v.getAnio());
+        return dto;
+    }
+
+    private Vehiculo toEntity(VehiculoDTO dto) {
+        Vehiculo v = new Vehiculo();
+        v.setId(dto.getId());
+        v.setPatente(dto.getPatente());
+        v.setIdModelo(dto.getIdModelo());
+        v.setAnio(dto.getAnio());
+        return v;
     }
 } 
