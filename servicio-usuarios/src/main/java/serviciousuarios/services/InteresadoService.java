@@ -2,10 +2,12 @@ package serviciousuarios.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import serviciousuarios.dtos.InteresadoDTO;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
-import serviciousuarios.dtos.InteresadoDTO;
 import serviciousuarios.entities.Interesado;
 import serviciousuarios.repositories.InteresadoRepository;
 

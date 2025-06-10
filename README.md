@@ -1,4 +1,5 @@
-# Trabajo Práctico Integrador  
+# Trabajo Práctico Integrador
+
 ## Backend de Aplicaciones 2025
 
 ---
@@ -34,7 +35,9 @@ Se provee una **estructura de referencia** para la base de datos, la cual puede 
 Los requerimientos para el trabajo integrador son:
 
 - [ ] **Crear endpoints para:**
+
   - [ ] Crear una nueva prueba:
+    - [x] Crear nueva prueba sin validación alguna.
     - [ ] Validar que el cliente no tenga la licencia vencida.
     - [ ] Verificar que el cliente no esté restringido.
     - [ ] Asegurar que el vehículo no esté en otra prueba.
@@ -53,6 +56,7 @@ Los requerimientos para el trabajo integrador son:
     - [ ] Detalle de pruebas realizadas por vehículo.
 
 - [ ] **Consumir servicio externo con configuración**:
+
   - [ ] Latitud/Longitud de la agencia.
   - [ ] Radio máximo permitido.
   - [ ] Listado de zonas peligrosas.
