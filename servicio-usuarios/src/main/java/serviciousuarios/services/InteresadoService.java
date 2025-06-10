@@ -20,4 +20,22 @@ public class InteresadoService {
     List<Interesado> interesados = interesadoRepository.findAll();
     return interesados.stream().map(Interesado::ToDTO).collect(Collectors.toList());
   }
+
+  public boolean hasExpiredLicense(int idUsuario) {
+    Interesado interesado = interesadoRepository.findById((long) idUsuario).orElse(null);
+    if (interesado == null) {
+      throw new RuntimeException("Interesado no encontrado");
+    }
+    String fechaVencimiento = interesado.getFechaVencimientoLicencia();
+    if (fechaVencimiento == null || fechaVencimiento.isEmpty()) {
+      return true; // Si no hay fecha, se considera expirada
+    }
+    java.time.LocalDate fechaVenc;
+    try {
+      fechaVenc = java.time.LocalDate.parse(fechaVencimiento);
+    } catch (Exception e) {
+      return true; // Si el formato es inválido, se considera expirada
+    }
+    return fechaVenc.isBefore(java.time.LocalDate.now());
+  }
 }

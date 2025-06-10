@@ -38,7 +38,7 @@ Los requerimientos para el trabajo integrador son:
 
   - [ ] Crear una nueva prueba:
     - [x] Crear nueva prueba sin validación alguna.
-    - [ ] Validar que el cliente no tenga la licencia vencida.
+    - [x] Validar que el cliente no tenga la licencia vencida.
     - [ ] Verificar que el cliente no esté restringido.
     - [ ] Asegurar que el vehículo no esté en otra prueba.
   - [ ] Listar todas las pruebas en curso.
