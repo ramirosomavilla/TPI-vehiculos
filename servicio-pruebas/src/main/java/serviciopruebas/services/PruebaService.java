@@ -27,6 +27,10 @@ public class PruebaService {
       throw new RuntimeException("El usuario está restringido");
     }
 
+    if (pruebaRepository.existsByVehiculoIdAndFechaFinIsNull(prueba.getIdVehiculo())) {
+      throw new RuntimeException("El vehículo ya está siendo utilizado en otra prueba");
+    }
+
     return prueba.toDTO();
   }
 }
