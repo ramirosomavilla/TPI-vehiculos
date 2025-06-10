@@ -38,4 +38,12 @@ public class InteresadoService {
     }
     return fechaVenc.isBefore(java.time.LocalDate.now());
   }
+
+  public boolean isRestricted(int idUsuario) {
+    Interesado interesado = interesadoRepository.findById((long) idUsuario).orElse(null);
+    if (interesado == null) {
+      throw new RuntimeException("Interesado no encontrado");
+    }
+    return interesado.getRestringido() == 1;
+  }
 }

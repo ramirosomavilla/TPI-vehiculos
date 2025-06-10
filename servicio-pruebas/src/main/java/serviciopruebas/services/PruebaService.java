@@ -19,10 +19,14 @@ public class PruebaService {
     Prueba prueba = pruebaDTO.toEntity();
     prueba = pruebaRepository.save(prueba);
 
-    if (usuarioClient.userHasExpiredLicense(prueba.getIdInteresado())) {
+    if (usuarioClient.interesadoHasExpiredLicense(prueba.getIdInteresado())) {
       throw new RuntimeException("El usuario tiene una licencia expirada");
     }
-    
+
+    if (usuarioClient.interesadoIsRestricted(prueba.getIdInteresado())) {
+      throw new RuntimeException("El usuario está restringido");
+    }
+
     return prueba.toDTO();
   }
 }

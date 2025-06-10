@@ -16,7 +16,7 @@ public class UsuarioClient {
     private String usuariosServiceUrl;
 
     // TODO: add error handling
-    public boolean userHasExpiredLicense(int idUsuario) {
+    public boolean interesadoHasExpiredLicense(int idUsuario) {
         try {
             Boolean expired = webClientBuilder.build()
                 .get()
@@ -25,6 +25,22 @@ public class UsuarioClient {
                 .bodyToMono(Boolean.class)
                 .block();
             return expired;
+        } catch (WebClientResponseException.NotFound e) {
+            return false;
+        } catch (WebClientResponseException e) {
+            throw new RuntimeException("Error consultando el servicio de usuarios: " + e.getStatusCode());
+        }
+    }
+
+    public boolean interesadoIsRestricted(int idUsuario) {
+        try {
+            Boolean restricted = webClientBuilder.build()
+                .get()
+                .uri(usuariosServiceUrl + "/api/v1/usuarios/interesados/" + idUsuario + "/is-restricted")
+                .retrieve()
+                .bodyToMono(Boolean.class)
+                .block();
+            return restricted;
         } catch (WebClientResponseException.NotFound e) {
             return false;
         } catch (WebClientResponseException e) {

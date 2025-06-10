@@ -39,4 +39,13 @@ public class InteresadoController {
     boolean expired = interesadoService.hasExpiredLicense(idUsuario);
     return ResponseEntity.ok(expired);
   }
+
+  @GetMapping("/{idUsuario}/is-restricted")
+  @Operation(summary = "Verifica si el interesado está restringido", description = "Devuelve true si el interesado está restringido, false si no")
+  @ApiResponse(responseCode = "200", description = "Resultado de la verificación")
+  @ApiResponse(responseCode = "404", description = "Interesado no encontrado")
+  public ResponseEntity<Boolean> isRestricted(@PathVariable("idUsuario") int idUsuario) {
+    boolean restricted = interesadoService.isRestricted(idUsuario);
+    return ResponseEntity.ok(restricted);
+  }
 }
