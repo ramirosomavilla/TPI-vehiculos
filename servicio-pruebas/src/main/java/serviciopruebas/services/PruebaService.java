@@ -1,5 +1,8 @@
 package serviciopruebas.services;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import serviciopruebas.repositories.PruebaRepository;
@@ -17,7 +20,6 @@ public class PruebaService {
 
   public PruebaDTO create(PruebaDTO pruebaDTO) {
     Prueba prueba = pruebaDTO.toEntity();
-    prueba = pruebaRepository.save(prueba);
 
     if (usuarioClient.interesadoHasExpiredLicense(prueba.getIdInteresado())) {
       throw new RuntimeException("El usuario tiene una licencia expirada");
@@ -27,10 +29,16 @@ public class PruebaService {
       throw new RuntimeException("El usuario está restringido");
     }
 
-    if (pruebaRepository.existsByVehiculoIdAndFechaFinIsNull(prueba.getIdVehiculo())) {
+    if (pruebaRepository.existsByIdVehiculoAndFechaHoraFinIsNull(prueba.getIdVehiculo())) {
       throw new RuntimeException("El vehículo ya está siendo utilizado en otra prueba");
     }
 
+    prueba = pruebaRepository.save(prueba);
     return prueba.toDTO();
+  }
+
+  public List<PruebaDTO> getPruebasEnCurso() {
+    List<Prueba> pruebas = pruebaRepository.findByFechaHoraFinIsNull();
+    return pruebas.stream().map(Prueba::toDTO).collect(Collectors.toList());
   }
 }

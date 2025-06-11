@@ -36,12 +36,12 @@ Los requerimientos para el trabajo integrador son:
 
 - [ ] **Crear endpoints para:**
 
-  - [ ] Crear una nueva prueba:
+  - [x] Crear una nueva prueba:
     - [x] Crear nueva prueba sin validación alguna.
     - [x] Validar que el cliente no tenga la licencia vencida.
     - [x] Verificar que el cliente no esté restringido.
     - [x] Asegurar que el vehículo no esté en otra prueba.
-  - [ ] Listar todas las pruebas en curso.
+  - [x] Listar todas las pruebas en curso.
   - [ ] Finalizar una prueba con comentarios del empleado.
   - [ ] Recibir posición actual de un vehículo y:
     - [ ] Verificar si está en una prueba.
