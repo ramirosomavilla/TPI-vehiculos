@@ -1,5 +1,6 @@
 package serviciopruebas.services;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -40,5 +41,16 @@ public class PruebaService {
   public List<PruebaDTO> getPruebasEnCurso() {
     List<Prueba> pruebas = pruebaRepository.findByFechaHoraFinIsNull();
     return pruebas.stream().map(Prueba::toDTO).collect(Collectors.toList());
+  }
+
+  public PruebaDTO finalizar(Integer id, String comentarios) {
+    Prueba prueba = pruebaRepository.findById(id).orElseThrow(() -> new RuntimeException("Prueba no encontrada"));
+    if (prueba.getFechaHoraFin() != null) {
+      throw new RuntimeException("La prueba ya ha sido finalizada");
+    }
+    prueba.setFechaHoraFin(LocalDateTime.now());
+    prueba.setComentarios(comentarios);
+    prueba = pruebaRepository.save(prueba);
+    return prueba.toDTO();
   }
 }

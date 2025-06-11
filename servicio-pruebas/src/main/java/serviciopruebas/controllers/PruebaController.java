@@ -44,4 +44,10 @@ public class PruebaController {
         List<PruebaDTO> pruebasEnCurso = pruebaService.getPruebasEnCurso();
         return ResponseEntity.ok(pruebasEnCurso);
     }
+
+    @PostMapping("/{id}/finalizar")
+    public ResponseEntity<PruebaDTO> finalizar(@PathVariable Integer id, @RequestBody String comentarios) {
+        PruebaDTO pruebaDTO = pruebaService.finalizar(id, comentarios);
+        return ResponseEntity.ok(pruebaDTO);
+    }
 } 
