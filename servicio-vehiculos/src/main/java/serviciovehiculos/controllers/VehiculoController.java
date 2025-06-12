@@ -25,7 +25,7 @@ public class VehiculoController {
     }
 
     @GetMapping("/api/v1/vehiculos/{id}")
-    public VehiculoDTO getById(@PathVariable Integer id) {
+    public VehiculoDTO getById(@PathVariable("id") Integer id) {
         return vehiculoService.findById(id).map(this::toDTO).orElse(null);
     }
 
@@ -36,8 +36,13 @@ public class VehiculoController {
     }
 
     @DeleteMapping("/api/v1/vehiculos/{id}")
-    public void delete(@PathVariable Integer id) {
+    public void delete(@PathVariable("id") Integer id) {
         vehiculoService.deleteById(id);
+    }
+
+    @PostMapping("/{id}/posicion")
+    public VehiculoDTO recibirPosicion(@PathVariable("id") Integer id, @RequestBody VehiculoDTO dto) {
+        return toDTO(vehiculoService.guardarPosicion(id, dto.getLatitud(), dto.getLongitud(), dto.getFechaUbicacion()));
     }
 
     private VehiculoDTO toDTO(Vehiculo v) {
@@ -46,6 +51,9 @@ public class VehiculoController {
         dto.setPatente(v.getPatente());
         dto.setIdModelo(v.getIdModelo());
         dto.setAnio(v.getAnio());
+        dto.setLatitud(v.getLatitud());
+        dto.setLongitud(v.getLongitud());
+        dto.setFechaUbicacion(v.getFechaUbicacion());
         return dto;
     }
 

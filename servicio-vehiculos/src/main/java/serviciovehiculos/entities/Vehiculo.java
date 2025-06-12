@@ -2,6 +2,9 @@ package serviciovehiculos.entities;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import java.time.LocalDateTime;
+
+
 
 @Entity
 @Table(name = "Vehiculos")
@@ -18,6 +21,15 @@ public class Vehiculo {
     private Integer idModelo;
 
     @Column(nullable = false)
-    private Integer anio = 2019;
+    private Integer anio;
+
+    @Column
+    private Double latitud;
+
+    @Column
+    private Double longitud;
+
+    @Column(name = "fecha_ubicacion")
+    private LocalDateTime fechaUbicacion;
 
 } 

@@ -43,8 +43,8 @@ Los requerimientos para el trabajo integrador son:
     - [x] Asegurar que el vehículo no esté en otra prueba.
   - [x] Listar todas las pruebas en curso.
   - [x] Finalizar una prueba con comentarios del empleado.
-  - [ ] Recibir posición actual de un vehículo y:
-    - [ ] Verificar si está en una prueba.
+  - [x] Recibir posición actual de un vehículo y:
+    - [x] Verificar si está en una prueba.
     - [ ] Validar si se excedió el radio o se ingresó a zona peligrosa.
     - [ ] Guardar notificación (y opcionalmente enviarla).
     - [ ] Restringir al cliente si se infringió una regla.

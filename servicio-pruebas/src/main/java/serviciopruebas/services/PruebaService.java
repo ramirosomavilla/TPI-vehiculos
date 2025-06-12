@@ -53,4 +53,8 @@ public class PruebaService {
     prueba = pruebaRepository.save(prueba);
     return prueba.toDTO();
   }
+
+  public Boolean vehiculoEnPrueba(Integer idVehiculo) {
+    return pruebaRepository.existsByIdVehiculoAndFechaHoraFinIsNull(idVehiculo);
+  }
 }
