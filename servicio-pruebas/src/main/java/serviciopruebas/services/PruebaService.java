@@ -38,7 +38,7 @@ public class PruebaService {
       throw new RuntimeException("El vehículo ya está siendo utilizado en otra prueba");
     }
 
-    //Lo hice para que se haga una promocion cada vez que se inicia una prueba
+    //Lo hice para que se haga una promocion cada vez que se inicia una prueba.
 
     String mensaje = "¡¡¡Nueva Promocion!!! Vehículo: " + prueba.getIdVehiculo() +
             " - Interesado: " + prueba.getIdInteresado();
