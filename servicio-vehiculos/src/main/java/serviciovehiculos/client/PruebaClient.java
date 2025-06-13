@@ -34,6 +34,21 @@ public class PruebaClient {
             throw new RuntimeException("Error consultando el servicio de usuarios: " + e.getStatusCode());
         }
     }
+
+    public Integer obtenerClienteDeVehiculoEnPrueba(int vehiculoId) {
+        try {
+            return webClientBuilder.build()
+                    .get()
+                    .uri(pruebasServiceUrl + "/api/v1/pruebas/vehiculos/" + vehiculoId + "/interesado")
+                    .retrieve()
+                    .bodyToMono(Integer.class)
+                    .block();
+        } catch (WebClientResponseException.NotFound e) {
+            return null;
+        } catch (WebClientResponseException e) {
+            throw new RuntimeException("Error obteniendo el interesado de la prueba: " + e.getStatusCode());
+        }
+    }
 }
 
 

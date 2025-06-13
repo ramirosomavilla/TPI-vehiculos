@@ -57,4 +57,10 @@ public class PruebaService {
   public Boolean vehiculoEnPrueba(Integer idVehiculo) {
     return pruebaRepository.existsByIdVehiculoAndFechaHoraFinIsNull(idVehiculo);
   }
+
+  public Integer obtenerInteresadoDeVehiculoEnPrueba(Integer idVehiculo) {
+    return pruebaRepository.findByVehiculoAndFechaHoraFinIsNull(idVehiculo)
+            .map(Prueba::getIdInteresado)
+            .orElseThrow(()-> new RuntimeException("No hay prueba activa para este vehiculo ID " + idVehiculo));
+  }
 }

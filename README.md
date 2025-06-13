@@ -47,7 +47,7 @@ Los requerimientos para el trabajo integrador son:
     - [x] Verificar si está en una prueba.
     - [ ] Validar si se excedió el radio o se ingresó a zona peligrosa.
     - [ ] Guardar notificación (y opcionalmente enviarla).
-    - [ ] Restringir al cliente si se infringió una regla.
+    - [x] Restringir al cliente si se infringió una regla.
   - [ ] Enviar notificaciones de promoción a uno o más teléfonos.
   - [ ] Generar reportes de:
     - [ ] Incidentes (excesos de límites).
@@ -57,9 +57,9 @@ Los requerimientos para el trabajo integrador son:
 
 - [ ] **Consumir servicio externo con configuración**:
 
-  - [ ] Latitud/Longitud de la agencia.
-  - [ ] Radio máximo permitido.
-  - [ ] Listado de zonas peligrosas.
+  - [x] Latitud/Longitud de la agencia.
+  - [x] Radio máximo permitido.
+  - [x] Listado de zonas peligrosas.
 
 - [ ] **Implementar seguridad de acceso**:
   - [ ] Solo empleados pueden crear pruebas y mandar notificaciones.

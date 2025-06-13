@@ -56,4 +56,10 @@ public class PruebaController {
         Boolean vehiculoEnPrueba = pruebaService.vehiculoEnPrueba(idVehiculo);
         return ResponseEntity.ok(vehiculoEnPrueba);
     }
+
+    @GetMapping("/vehiculos/{idVehiculo}/interesado")
+    public ResponseEntity<Integer> obtenerInteresadoDeVehiculoEnPrueba(@PathVariable Integer idVehiculo) {
+        Integer idInteresado = pruebaService.obtenerInteresadoDeVehiculoEnPrueba(idVehiculo);
+        return ResponseEntity.ok(idInteresado);
+    }
 } 
