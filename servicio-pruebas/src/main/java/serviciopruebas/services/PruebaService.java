@@ -19,6 +19,10 @@ public class PruebaService {
   @Autowired
   private UsuarioClient usuarioClient;
 
+  @Autowired
+  private NotificacionService notificacionService;
+
+
   public PruebaDTO create(PruebaDTO pruebaDTO) {
     Prueba prueba = pruebaDTO.toEntity();
 
@@ -33,6 +37,16 @@ public class PruebaService {
     if (pruebaRepository.existsByIdVehiculoAndFechaHoraFinIsNull(prueba.getIdVehiculo())) {
       throw new RuntimeException("El vehículo ya está siendo utilizado en otra prueba");
     }
+
+    //Lo hice para que se haga una promocion cada vez que se inicia una prueba
+
+    String mensaje = "¡¡¡Nueva Promocion!!! Vehículo: " + prueba.getIdVehiculo() +
+            " - Interesado: " + prueba.getIdInteresado();
+    notificacionService.crearNotificacionPromocion(
+            prueba.getIdCliente(),
+            prueba.getIdVehiculo(),
+            prueba.getIdInteresado(),
+            mensaje
 
     prueba = pruebaRepository.save(prueba);
     return prueba.toDTO();
