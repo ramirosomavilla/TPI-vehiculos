@@ -1,14 +1,13 @@
-package serviciovehiculos.services;
+package serviciopruebas.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.cors.CorsConfigurationSource;
-import serviciovehiculos.client.ConfigClient;
-import serviciovehiculos.client.InteresadoClient;
-import serviciovehiculos.config.AgencyConfig;
-import serviciovehiculos.entities.Vehiculo;
-import serviciovehiculos.client.PruebaClient;
-import serviciovehiculos.repositories.VehiculoRepository;
+import serviciopruebas.client.ConfigClient;
+import serviciopruebas.client.InteresadoClient;
+import serviciopruebas.config.AgencyConfig;
+import serviciopruebas.entities.Vehiculo;
+import serviciopruebas.repositories.VehiculoRepository;
 import java.time.LocalDateTime;
 
 import java.util.List;
@@ -20,7 +19,7 @@ public class VehiculoService {
     private VehiculoRepository vehiculoRepository;
 
     @Autowired
-    private PruebaClient pruebaClient;
+    private PruebaService pruebaservice;
 
     @Autowired
     private ConfigClient configClient;
@@ -49,7 +48,7 @@ public class VehiculoService {
 
     public Vehiculo guardarPosicion(Integer vehiculoId, Double latitud, Double longitud, LocalDateTime timestamp) {
         Vehiculo vehiculo = vehiculoRepository.findById(vehiculoId).orElseThrow(() -> new RuntimeException("Vehiculo no encontrado"));
-        if (pruebaClient.vehiculoEnPrueba(vehiculoId)) {
+        if (pruebaservice.vehiculoEnPrueba(vehiculoId)) {
             throw new RuntimeException("El vehículo está en prueba");
         }
 
@@ -59,7 +58,7 @@ public class VehiculoService {
         boolean enZonaPeligrosa = estaEnZonaPeligrosa(latitud, longitud, config);
 
         if(fueraDeRadio || enZonaPeligrosa) {
-            Integer idInteresado = pruebaClient.obtenerClienteDeVehiculoEnPrueba(vehiculoId);
+            Integer idInteresado = pruebaservice.obtenerInteresadoDeVehiculoEnPrueba(vehiculoId);
             interesadoClient.restringirInteresado(idInteresado);
             System.out.println("Cliente " + idInteresado + " restringido por infracción geográfica");
         }

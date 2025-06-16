@@ -12,20 +12,17 @@ public class GWConfig {
 
     @Bean
     public RouteLocator configurarRutas(RouteLocatorBuilder builder,
-                                        @Value("${tpi-vehiculos-api-gw.url-microservicio-notificaciones}") String uriNotificaciones,
                                         @Value("${tpi-vehiculos-api-gw.url-microservicio-pruebas}") String uriPruebas,
-                                        @Value("${tpi-vehiculos-api-gw.url-microservicio-reportes}") String uriReportes,
-                                        @Value("${tpi-vehiculos-api-gw.url-microservicio-vehiculos}") String uriVehiculos,
                                         @Value("${tpi-vehiculos-api-gw.url-microservicio-usuarios}") String uriUsuarios) {
         return builder.routes()
                 // Ruteo al Microservicio de Notificaciones
-                .route(p -> p.path("/api/v1/notificaciones/**").uri(uriNotificaciones))
+                .route(p -> p.path("/api/v1/notificaciones/**").uri(uriUsuarios))
                 // Ruteo al Microservicio de Pruebas
                 .route(p -> p.path("/api/v1/pruebas/**").uri(uriPruebas))
                 // Ruteo al Microservicio de Reportes
-                .route(p -> p.path("/api/v1/reportes/**").uri(uriReportes))
+                .route(p -> p.path("/api/v1/reportes/**").uri(uriUsuarios))
                 // Ruteo al Microservicio de Vehiculos
-                .route(p -> p.path("/api/v1/vehiculos/**").uri(uriVehiculos))
+                .route(p -> p.path("/api/v1/vehiculos/**").uri(uriPruebas))
                 // Ruteo al Microservicio de Usuarios
                 .route(p -> p.path("/api/v1/usuarios/**").uri(uriUsuarios))
                 .build();

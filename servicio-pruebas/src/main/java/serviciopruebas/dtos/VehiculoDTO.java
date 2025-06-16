@@ -1,4 +1,4 @@
-package serviciovehiculos.dtos;
+package serviciopruebas.dtos;
 
 import java.time.LocalDateTime;
 

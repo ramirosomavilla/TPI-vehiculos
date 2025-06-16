@@ -1,4 +1,4 @@
-package serviciovehiculos.config;
+package serviciopruebas.config;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

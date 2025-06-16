@@ -1,4 +1,4 @@
-package serviciovehiculos.client;
+package serviciopruebas.client;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,7 +19,7 @@ public class InteresadoClient {
         try {
           webClientBuilder.build()
                   .put()
-                  .uri(usuariosServiceUrl + "/interesados/"+ idInteresado + "/restringido")
+                  .uri(usuariosServiceUrl + "api/v1/usuarios/interesados/"+ idInteresado + "/restringido")
                   .retrieve()
                   .bodyToMono(Void.class)
                   .block();
