@@ -46,4 +46,12 @@ public class InteresadoService {
     }
     return interesado.getRestringido() == 1;
   }
+
+  public void restringir(Long idUsuario) {
+    Interesado interesado = interesadoRepository.findById(idUsuario)
+            .orElseThrow(() -> new RuntimeException("Interesado no encontrado"));
+    interesado.setRestringido(1);
+    interesadoRepository.save(interesado);
+  }
+
 }

@@ -1,10 +1,7 @@
 package serviciousuarios.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -47,5 +44,14 @@ public class InteresadoController {
   public ResponseEntity<Boolean> isRestricted(@PathVariable("idUsuario") int idUsuario) {
     boolean restricted = interesadoService.isRestricted(idUsuario);
     return ResponseEntity.ok(restricted);
+  }
+
+  @PutMapping("/{idUsuario}/restringido")
+  @Operation(summary = "Marca al interesado como restringido", description = "Actualiza el estado del interesado a restringido = true")
+  @ApiResponse(responseCode = "204", description = "Interesado restringido con exito")
+  @ApiResponse(responseCode = "404", description = "Interesado no encontrado")
+  public ResponseEntity<Void> restringir(@PathVariable("idUsuario") Long idUsuario) {
+      interesadoService.restringir(idUsuario);
+      return ResponseEntity.noContent().build();
   }
 }
