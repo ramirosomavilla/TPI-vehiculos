@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import serviciousuarios.services.InteresadoService;
 import serviciousuarios.dtos.InteresadoDTO;
+import serviciousuarios.dtos.NotificacionRequest;
 import java.util.List;
 
 @RestController
@@ -50,8 +51,24 @@ public class InteresadoController {
   @Operation(summary = "Marca al interesado como restringido", description = "Actualiza el estado del interesado a restringido = true")
   @ApiResponse(responseCode = "204", description = "Interesado restringido con exito")
   @ApiResponse(responseCode = "404", description = "Interesado no encontrado")
-  public ResponseEntity<Void> restringir(@PathVariable("idUsuario") Long idUsuario) {
+  public ResponseEntity<Void> restringir(@PathVariable("idUsuario") Integer idUsuario) {
       interesadoService.restringir(idUsuario);
       return ResponseEntity.noContent().build();
   }
+
+    @PostMapping("/{idInteresado}/notificar")
+    @Operation(summary = "Notifica al interesado", description = "Envía una notificación al interesado con el mensaje proporcionado")
+    @ApiResponse(responseCode = "204", description = "Notificación enviada con éxito")
+    @ApiResponse(responseCode = "404", description = "Interesado no encontrado")
+    public ResponseEntity<Void> notificarInteresado(
+            @RequestBody NotificacionRequest request) {
+      interesadoService.notificarInteresado(
+        request.getIdEmpleado(),
+        request.getIdVehiculo(),
+        request.getIdInteresado(),
+        request.getTipo(),
+        request.getMensaje()
+      );
+      return ResponseEntity.noContent().build();
+    }
 }

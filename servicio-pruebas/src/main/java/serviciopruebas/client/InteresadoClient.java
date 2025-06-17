@@ -19,7 +19,7 @@ public class InteresadoClient {
         try {
           webClientBuilder.build()
                   .put()
-                  .uri(usuariosServiceUrl + "api/v1/usuarios/interesados/"+ idInteresado + "/restringido")
+                  .uri(usuariosServiceUrl + "/api/v1/usuarios/interesados/"+ idInteresado + "/restringido")
                   .retrieve()
                   .bodyToMono(Void.class)
                   .block();

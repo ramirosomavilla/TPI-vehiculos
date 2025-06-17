@@ -18,12 +18,19 @@ public class ConfigClient {
 
     public AgencyConfig obtenerConfiguracionAgencia() {
         try {
-            return webClientBuilder.build()
+            System.out.println("Obteniendo configuración de agencia desde: " + configServiceUrl);
+            var res = webClientBuilder.build()
                     .get()
                     .uri(configServiceUrl)
                     .retrieve()
                     .bodyToMono(AgencyConfig.class)
                     .block();
+
+            System.out.println("Configuración de agencia obtenida: " + res);
+            if (res == null) {
+                System.out.println("La respuesta fue null");
+            }
+            return res;
         } catch (WebClientResponseException e) {
             throw new RuntimeException("Error obteniendo configuración de agencia: " + e.getStatusCode());
         }

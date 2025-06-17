@@ -5,7 +5,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.cors.CorsConfigurationSource;
 import serviciopruebas.client.ConfigClient;
 import serviciopruebas.client.InteresadoClient;
+import serviciopruebas.client.NotificacionClient;
 import serviciopruebas.config.AgencyConfig;
+import serviciopruebas.entities.Prueba;
 import serviciopruebas.entities.Vehiculo;
 import serviciopruebas.repositories.VehiculoRepository;
 import java.time.LocalDateTime;
@@ -28,6 +30,9 @@ public class VehiculoService {
     private InteresadoClient interesadoClient;
 
     @Autowired
+    private NotificacionClient notificacionClient;
+
+    @Autowired
     private CorsConfigurationSource corsConfigurationSource;
 
     public List<Vehiculo> findAll() {
@@ -48,19 +53,28 @@ public class VehiculoService {
 
     public Vehiculo guardarPosicion(Integer vehiculoId, Double latitud, Double longitud, LocalDateTime timestamp) {
         Vehiculo vehiculo = vehiculoRepository.findById(vehiculoId).orElseThrow(() -> new RuntimeException("Vehiculo no encontrado"));
-        if (pruebaservice.vehiculoEnPrueba(vehiculoId)) {
-            throw new RuntimeException("El vehículo está en prueba");
+        if (!pruebaservice.vehiculoEnPrueba(vehiculoId)) {
+            throw new RuntimeException("El vehículo no está en prueba");
         }
 
         AgencyConfig config = configClient.obtenerConfiguracionAgencia();
+
+        System.out.println("Configuración de agencia: " + config);
 
         boolean fueraDeRadio = !estaDentroDelRadio(latitud, longitud, config);
         boolean enZonaPeligrosa = estaEnZonaPeligrosa(latitud, longitud, config);
 
         if(fueraDeRadio || enZonaPeligrosa) {
-            Integer idInteresado = pruebaservice.obtenerInteresadoDeVehiculoEnPrueba(vehiculoId);
-            interesadoClient.restringirInteresado(idInteresado);
-            System.out.println("Cliente " + idInteresado + " restringido por infracción geográfica");
+            Prueba pruebaEnCurso = pruebaservice.obtenerPruebaEnCursoByVehiculoId(vehiculoId);
+            interesadoClient.restringirInteresado(pruebaEnCurso.getIdInteresado());
+            notificacionClient.notificarInteresado(
+                pruebaEnCurso.getIdEmpleado(),
+                pruebaEnCurso.getIdVehiculo(),
+                pruebaEnCurso.getIdInteresado(),
+                "Restricción Geográfica",
+                "El vehículo ha sido ubicado fuera del radio permitido o en una zona peligrosa. El interesado ha sido restringido."
+            );
+            System.out.println("Cliente " + pruebaEnCurso.getIdInteresado() + " restringido por infracción geográfica");
         }
 
         vehiculo.setLatitud(latitud);
@@ -70,19 +84,19 @@ public class VehiculoService {
     }
 
     private boolean estaDentroDelRadio(Double lat, Double lng, AgencyConfig config) {
-        double dx = config.getLatitud() - lat;
-        double dy = config.getLongitud() - lng;
+        AgencyConfig.Ubicacion centro = config.getUbicacionAgencia();
+        double dx = centro.getLatitud() - lat;
+        double dy = centro.getLongitud() - lng;
         double distancia = Math.sqrt(dx * dx + dy * dy);
-        return distancia <= config.getRadio();
+        return distancia <= config.getRadioMaximoMetros();
     }
 
     private boolean estaEnZonaPeligrosa(Double lat, Double lng, AgencyConfig config) {
         return config.getZonasPeligrosas().stream().anyMatch(zona -> {
-            var no = zona.getPuntoNO();
-            var se = zona.getPuntoSE();
-
-            return lat <= no.getLat() && lat >= se.getLat()
-                    && lng >= no.getLng() && lng <= se.getLng();
+            double dx = zona.getCoordenadas().getLatitud() - lat;
+            double dy = zona.getCoordenadas().getLongitud() - lng;
+            double distancia = Math.sqrt(dx * dx + dy * dy);
+            return distancia <= zona.getRadioMetros();
         });
     }
 } 

@@ -9,12 +9,16 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import serviciousuarios.entities.Interesado;
+import serviciousuarios.entities.Notificacion;
 import serviciousuarios.repositories.InteresadoRepository;
+import serviciousuarios.repositories.NotificacionRepository;
 
 @Service
 public class InteresadoService {
   @Autowired
   private InteresadoRepository interesadoRepository;
+    @Autowired
+    private NotificacionRepository notificacionRepository;
 
   public List<InteresadoDTO> getAllInteresados() {
     List<Interesado> interesados = interesadoRepository.findAll();
@@ -22,7 +26,7 @@ public class InteresadoService {
   }
 
   public boolean hasExpiredLicense(int idUsuario) {
-    Interesado interesado = interesadoRepository.findById((long) idUsuario).orElse(null);
+    Interesado interesado = interesadoRepository.findById(idUsuario).orElse(null);
     if (interesado == null) {
       throw new RuntimeException("Interesado no encontrado");
     }
@@ -40,18 +44,27 @@ public class InteresadoService {
   }
 
   public boolean isRestricted(int idUsuario) {
-    Interesado interesado = interesadoRepository.findById((long) idUsuario).orElse(null);
+    Interesado interesado = interesadoRepository.findById(idUsuario).orElse(null);
     if (interesado == null) {
       throw new RuntimeException("Interesado no encontrado");
     }
     return interesado.getRestringido() == 1;
   }
 
-  public void restringir(Long idUsuario) {
+  public void restringir(Integer idUsuario) {
     Interesado interesado = interesadoRepository.findById(idUsuario)
             .orElseThrow(() -> new RuntimeException("Interesado no encontrado"));
     interesado.setRestringido(1);
     interesadoRepository.save(interesado);
   }
+
+    public void notificarInteresado(Integer idEmpleado,Integer idVehiculo,Integer idInteresado,String tipo, String mensaje) {
+        Interesado interesado = interesadoRepository.findById(idInteresado)
+                .orElseThrow(() -> new RuntimeException("Interesado no encontrado"));
+
+      Notificacion notificacion = new Notificacion(idEmpleado, idVehiculo, idInteresado, tipo, mensaje);
+      notificacionRepository.save(notificacion);
+        System.out.println("Notificación para " + interesado.getNombre() + ": " + mensaje);
+    }
 
 }

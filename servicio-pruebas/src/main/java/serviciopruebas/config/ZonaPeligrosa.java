@@ -8,6 +8,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ZonaPeligrosa {
-    private Coordenada puntoNO;
-    private Coordenada puntoSE;
+    private Coordenada centro;
+    private double radio;
 }

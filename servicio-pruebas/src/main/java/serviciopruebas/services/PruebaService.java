@@ -58,9 +58,8 @@ public class PruebaService {
     return pruebaRepository.existsByIdVehiculoAndFechaHoraFinIsNull(idVehiculo);
   }
 
-  public Integer obtenerInteresadoDeVehiculoEnPrueba(Integer idVehiculo) {
-    return pruebaRepository.findByVehiculoAndFechaHoraFinIsNull(idVehiculo)
-            .map(Prueba::getIdInteresado)
-            .orElseThrow(()-> new RuntimeException("No hay prueba activa para este vehiculo ID " + idVehiculo));
+  public Prueba obtenerPruebaEnCursoByVehiculoId(Integer idVehiculo) {
+    return pruebaRepository.findByIdVehiculoAndFechaHoraFinIsNull(idVehiculo)
+            .orElseThrow(() -> new RuntimeException("No hay prueba en curso para el vehículo con ID: " + idVehiculo));
   }
 }

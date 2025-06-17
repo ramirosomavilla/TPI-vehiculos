@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
 import serviciopruebas.dtos.PruebaDTO;
+import serviciopruebas.entities.Prueba;
 import serviciopruebas.services.PruebaService;
 
 @RestController
@@ -59,7 +60,7 @@ public class PruebaController {
 
     @GetMapping("/vehiculos/{idVehiculo}/interesado")
     public ResponseEntity<Integer> obtenerInteresadoDeVehiculoEnPrueba(@PathVariable Integer idVehiculo) {
-        Integer idInteresado = pruebaService.obtenerInteresadoDeVehiculoEnPrueba(idVehiculo);
-        return ResponseEntity.ok(idInteresado);
+        Prueba pruebaEnCurso = pruebaService.obtenerPruebaEnCursoByVehiculoId(idVehiculo);
+        return ResponseEntity.ok(pruebaEnCurso.getIdInteresado());
     }
 } 

@@ -9,5 +9,5 @@ import serviciopruebas.entities.Prueba;
 public interface PruebaRepository extends CrudRepository<Prueba, Integer> {
     boolean existsByIdVehiculoAndFechaHoraFinIsNull(Integer vehiculoId);
     List<Prueba> findByFechaHoraFinIsNull();
-    Optional<Prueba> findByVehiculoAndFechaHoraFinIsNull(Integer vehiculoId);
+    Optional<Prueba> findByIdVehiculoAndFechaHoraFinIsNull(Integer vehiculoId);
 }
