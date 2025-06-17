@@ -1,4 +1,4 @@
-package serviciopruebas.config;
+package serviciopruebas.dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Coordenada {
-    private double lat;
-    private double lng;
+public class ZonaPeligrosaDTO {
+    private CoordenadaDTO centro;
+    private double radio;
 }

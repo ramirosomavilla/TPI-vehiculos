@@ -6,7 +6,8 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import serviciopruebas.client.ConfigClient;
 import serviciopruebas.client.InteresadoClient;
 import serviciopruebas.client.NotificacionClient;
-import serviciopruebas.config.AgencyConfig;
+import serviciopruebas.dtos.AgencyConfigDTO;
+import serviciopruebas.dtos.NotificacionRequestDTO;
 import serviciopruebas.entities.Prueba;
 import serviciopruebas.entities.Vehiculo;
 import serviciopruebas.repositories.VehiculoRepository;
@@ -57,7 +58,7 @@ public class VehiculoService {
             throw new RuntimeException("El vehículo no está en prueba");
         }
 
-        AgencyConfig config = configClient.obtenerConfiguracionAgencia();
+        AgencyConfigDTO config = configClient.obtenerConfiguracionAgencia();
 
         System.out.println("Configuración de agencia: " + config);
 
@@ -67,13 +68,16 @@ public class VehiculoService {
         if(fueraDeRadio || enZonaPeligrosa) {
             Prueba pruebaEnCurso = pruebaservice.obtenerPruebaEnCursoByVehiculoId(vehiculoId);
             interesadoClient.restringirInteresado(pruebaEnCurso.getIdInteresado());
-            notificacionClient.notificarInteresado(
+
+            NotificacionRequestDTO notificacionRequest = new NotificacionRequestDTO(
                 pruebaEnCurso.getIdEmpleado(),
                 pruebaEnCurso.getIdVehiculo(),
                 pruebaEnCurso.getIdInteresado(),
                 "Restricción Geográfica",
                 "El vehículo ha sido ubicado fuera del radio permitido o en una zona peligrosa. El interesado ha sido restringido."
             );
+            notificacionClient.notificarInteresado(notificacionRequest);
+
             System.out.println("Cliente " + pruebaEnCurso.getIdInteresado() + " restringido por infracción geográfica");
         }
 
@@ -83,15 +87,15 @@ public class VehiculoService {
         return vehiculoRepository.save(vehiculo);
     }
 
-    private boolean estaDentroDelRadio(Double lat, Double lng, AgencyConfig config) {
-        AgencyConfig.Ubicacion centro = config.getUbicacionAgencia();
+    private boolean estaDentroDelRadio(Double lat, Double lng, AgencyConfigDTO config) {
+        AgencyConfigDTO.Ubicacion centro = config.getUbicacionAgencia();
         double dx = centro.getLatitud() - lat;
         double dy = centro.getLongitud() - lng;
         double distancia = Math.sqrt(dx * dx + dy * dy);
         return distancia <= config.getRadioMaximoMetros();
     }
 
-    private boolean estaEnZonaPeligrosa(Double lat, Double lng, AgencyConfig config) {
+    private boolean estaEnZonaPeligrosa(Double lat, Double lng, AgencyConfigDTO config) {
         return config.getZonasPeligrosas().stream().anyMatch(zona -> {
             double dx = zona.getCoordenadas().getLatitud() - lat;
             double dy = zona.getCoordenadas().getLongitud() - lng;

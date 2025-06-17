@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
-import serviciopruebas.config.AgencyConfig;
+import serviciopruebas.dtos.AgencyConfigDTO;
 
 @Component
 public class ConfigClient {
@@ -16,14 +16,14 @@ public class ConfigClient {
     @Value("${agency.config.service.url}")
     private String configServiceUrl;
 
-    public AgencyConfig obtenerConfiguracionAgencia() {
+    public AgencyConfigDTO obtenerConfiguracionAgencia() {
         try {
             System.out.println("Obteniendo configuración de agencia desde: " + configServiceUrl);
             var res = webClientBuilder.build()
                     .get()
                     .uri(configServiceUrl)
                     .retrieve()
-                    .bodyToMono(AgencyConfig.class)
+                    .bodyToMono(AgencyConfigDTO.class)
                     .block();
 
             System.out.println("Configuración de agencia obtenida: " + res);

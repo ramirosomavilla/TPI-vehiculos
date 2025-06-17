@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
-import serviciopruebas.dtos.NotificacionRequest;
+import serviciopruebas.dtos.NotificacionRequestDTO;
 
 @Component
 public class NotificacionClient {
@@ -14,19 +14,13 @@ public class NotificacionClient {
     @Value("${usuarios.service.url}")
     private String usuariosServiceUrl;
 
-    public void notificarInteresado(Integer idEmpleado, Integer idVehiculo, Integer idInteresado, String tipo, String mensaje) {
-        NotificacionRequest request = new NotificacionRequest();
-        request.setIdEmpleado(idEmpleado);
-        request.setIdVehiculo(idVehiculo);
-        request.setIdInteresado(idInteresado);
-        request.setTipo(tipo);
-        request.setMensaje(mensaje);
+    public void notificarInteresado(NotificacionRequestDTO notificacionRequest) {
+        Integer idInteresado = notificacionRequest.getIdInteresado();
 
-        System.out.println("usuariosServiceUrl: " + usuariosServiceUrl);
         webClientBuilder.build()
                 .post()
                 .uri(usuariosServiceUrl + "/api/v1/usuarios/interesados/" + idInteresado + "/notificar")
-                .bodyValue(request)
+                .bodyValue(notificacionRequest)
                 .retrieve()
                 .bodyToMono(Void.class)
                 .block();
