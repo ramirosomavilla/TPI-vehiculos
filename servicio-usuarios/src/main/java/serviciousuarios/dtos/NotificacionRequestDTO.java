@@ -3,7 +3,7 @@ package serviciousuarios.dtos;
 import lombok.Data;
 
 @Data
-public class NotificacionRequest {
+public class NotificacionRequestDTO {
     private Integer idEmpleado;
     private Integer idVehiculo;
     private Integer idInteresado;

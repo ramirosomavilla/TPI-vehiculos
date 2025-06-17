@@ -12,7 +12,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import serviciousuarios.entities.Notificacion;
 import serviciousuarios.services.InteresadoService;
 import serviciousuarios.dtos.InteresadoDTO;
-import serviciousuarios.dtos.NotificacionRequest;
+import serviciousuarios.dtos.NotificacionRequestDTO;
 import java.util.List;
 
 @RestController
@@ -62,7 +62,7 @@ public class InteresadoController {
     @ApiResponse(responseCode = "204", description = "Notificación enviada con éxito")
     @ApiResponse(responseCode = "404", description = "Interesado no encontrado")
     public ResponseEntity<Notificacion> notificarInteresado(
-            @RequestBody NotificacionRequest request) {
+            @RequestBody NotificacionRequestDTO request) {
       Notificacion notif = interesadoService.notificarInteresado(
         request.getIdEmpleado(),
         request.getIdVehiculo(),

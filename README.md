@@ -55,7 +55,7 @@ Los requerimientos para el trabajo integrador son:
     - [ ] Kilómetros recorridos por vehículo en un período.
     - [ ] Detalle de pruebas realizadas por vehículo.
 
-- [ ] **Consumir servicio externo con configuración**:
+- [x] **Consumir servicio externo con configuración**:
 
   - [x] Latitud/Longitud de la agencia.
   - [x] Radio máximo permitido.
