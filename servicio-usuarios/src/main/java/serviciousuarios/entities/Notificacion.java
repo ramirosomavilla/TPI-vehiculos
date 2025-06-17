@@ -14,10 +14,10 @@ public class Notificacion {
     @Column(name = "id")
     private Integer id;
 
-    @Column(nullable = false)
+    @Column
     private Integer idEmpleado;
 
-    @Column(nullable = false)
+    @Column
     private Integer idVehiculo;
 
     @Column(nullable = false)

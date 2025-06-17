@@ -48,7 +48,7 @@ Los requerimientos para el trabajo integrador son:
     - [x] Validar si se excedió el radio o se ingresó a zona peligrosa.
     - [x] Guardar notificación (y opcionalmente enviarla).
     - [x] Restringir al cliente si se infringió una regla.
-  - [ ] Enviar notificaciones de promoción a uno o más teléfonos.
+  - [x] Enviar notificaciones de promoción a uno o más teléfonos.
   - [ ] Generar reportes de:
     - [ ] Incidentes (excesos de límites).
     - [ ] Detalle de incidentes por empleado.

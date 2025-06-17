@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import serviciousuarios.entities.Notificacion;
 import serviciousuarios.services.InteresadoService;
 import serviciousuarios.dtos.InteresadoDTO;
 import serviciousuarios.dtos.NotificacionRequest;
@@ -60,15 +61,15 @@ public class InteresadoController {
     @Operation(summary = "Notifica al interesado", description = "Envía una notificación al interesado con el mensaje proporcionado")
     @ApiResponse(responseCode = "204", description = "Notificación enviada con éxito")
     @ApiResponse(responseCode = "404", description = "Interesado no encontrado")
-    public ResponseEntity<Void> notificarInteresado(
+    public ResponseEntity<Notificacion> notificarInteresado(
             @RequestBody NotificacionRequest request) {
-      interesadoService.notificarInteresado(
+      Notificacion notif = interesadoService.notificarInteresado(
         request.getIdEmpleado(),
         request.getIdVehiculo(),
         request.getIdInteresado(),
         request.getTipo(),
         request.getMensaje()
       );
-      return ResponseEntity.noContent().build();
+      return ResponseEntity.ok(notif);
     }
 }

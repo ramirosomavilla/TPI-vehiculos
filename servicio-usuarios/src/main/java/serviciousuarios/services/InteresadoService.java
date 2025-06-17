@@ -58,13 +58,13 @@ public class InteresadoService {
     interesadoRepository.save(interesado);
   }
 
-    public void notificarInteresado(Integer idEmpleado,Integer idVehiculo,Integer idInteresado,String tipo, String mensaje) {
+    public Notificacion notificarInteresado(Integer idEmpleado,Integer idVehiculo,Integer idInteresado,String tipo, String mensaje) {
         Interesado interesado = interesadoRepository.findById(idInteresado)
                 .orElseThrow(() -> new RuntimeException("Interesado no encontrado"));
 
       Notificacion notificacion = new Notificacion(idEmpleado, idVehiculo, idInteresado, tipo, mensaje);
       notificacionRepository.save(notificacion);
-        System.out.println("Notificación para " + interesado.getNombre() + ": " + mensaje);
+      return notificacion;
     }
 
 }
