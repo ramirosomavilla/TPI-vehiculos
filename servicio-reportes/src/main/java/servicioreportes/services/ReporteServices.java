@@ -21,15 +21,15 @@ import servicioreportes.repositories.PosicionRepository;
 
         private final IncidenteRepository incidenteRepo;
         private final PosicionRepository posicionRepo;
-        private final PruebaClient pruebaClient;
+       // private final PruebaClient pruebaClient;
 
-        public ReporteService(
+        public ReporteServices(
                 IncidenteRepository incidenteRepo,
-                PosicionRepository posicionRepo,
-                PruebaClient pruebaClient) {
+                PosicionRepository posicionRepo/*,
+                PruebaClient pruebaClient*/) {
             this.incidenteRepo = incidenteRepo;
             this.posicionRepo = posicionRepo;
-            this.pruebaClient = pruebaClient;
+            //this.pruebaClient = pruebaClient;
         }
 
         // 1. Incidentes desde la tabla
@@ -88,8 +88,8 @@ import servicioreportes.repositories.PosicionRepository;
         }
 
         // 3. Pruebas por vehículo via Feign
-        public List<PruebaDTO> listarPruebasPorVehiculo(Long vehiculoId) {
-            return pruebaClient.getPruebasPorVehiculo(vehiculoId);
-        }
+        /*public List<PruebaDTO> listarPruebasPorVehiculo(Long vehiculoId) {
+            return  pruebaClient.getPruebasPorVehiculo(vehiculoId);
+        }*/
     }
 
