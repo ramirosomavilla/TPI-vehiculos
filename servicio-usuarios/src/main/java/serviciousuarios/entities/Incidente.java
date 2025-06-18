@@ -11,11 +11,13 @@ public class Incidente {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "empleado_id")
+    @Column(name = "empleado_id", nullable=false)
     private Long empleadoId;
 
+    @Column(nullable=false)
     private String descripcion;
 
+    @Column(nullable=false)
     private LocalDateTime fecha;
 
     // Getters y Setters
