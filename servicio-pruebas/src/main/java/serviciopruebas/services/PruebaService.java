@@ -38,6 +38,11 @@ public class PruebaService {
     return prueba.toDTO();
   }
 
+  public List<Prueba> findAll() {
+    return pruebaRepository.findAll();
+  }
+
+
   public List<PruebaDTO> getPruebasEnCurso() {
     List<Prueba> pruebas = pruebaRepository.findByFechaHoraFinIsNull();
     return pruebas.stream().map(Prueba::toDTO).collect(Collectors.toList());
