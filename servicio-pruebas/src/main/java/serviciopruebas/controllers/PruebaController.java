@@ -35,12 +35,6 @@ public class PruebaController {
     }
 
     @GetMapping
-    public String test() {
-        logger.info("¡Petición GET recibida en /pruebas!");
-        return "Servicio de pruebas activo";
-    }
-
-    @GetMapping
     public List<PruebaDTO> getAll() {
         return pruebaService.findAll().stream().map(this::toDTO).toList();
     }
