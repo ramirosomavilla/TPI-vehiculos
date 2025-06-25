@@ -40,8 +40,9 @@ public class ReporteController {
             return reporteService.calcularKilometrosRecorridos(idVehiculo, desde, hasta);
         }
 
-        @GetMapping("/pruebas")
-        public List<PruebaDTO> obtenerPruebasPorVehiculo(@RequestParam Long idVehiculo) {
-            return reporteService.listarPruebasPorVehiculo(idVehiculo);
-        }
+
+    @GetMapping("/pruebas/vehiculo/{vehiculoId}")
+    public List<PruebaDTO> obtenerPruebasPorVehiculo(@PathVariable Long idVehiculo) {
+        return reporteService.listarPruebasPorVehiculo(idVehiculo);
+    }
     }

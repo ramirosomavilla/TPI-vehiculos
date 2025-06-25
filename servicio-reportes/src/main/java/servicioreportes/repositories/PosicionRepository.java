@@ -21,5 +21,6 @@ public interface PosicionRepository
             @Param("vehiculoId") Long vehiculoId,
             @Param("inicio")    LocalDateTime inicio,
             @Param("fin")       LocalDateTime fin);
+
 }
 
