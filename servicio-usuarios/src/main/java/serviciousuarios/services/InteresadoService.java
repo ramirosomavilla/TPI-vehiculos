@@ -58,6 +58,21 @@ public class InteresadoService {
     interesadoRepository.save(interesado);
   }
 
+  public InteresadoDTO createInteresado(InteresadoDTO interesadoDTO) {
+    Interesado nuevoInteresado = new Interesado();
+
+    nuevoInteresado.setTipoDocumento(interesadoDTO.getTipoDocumento());
+    nuevoInteresado.setDocumento(interesadoDTO.getDocumento());
+    nuevoInteresado.setNombre(interesadoDTO.getNombre());
+    nuevoInteresado.setApellido(interesadoDTO.getApellido());
+    nuevoInteresado.setRestringido(interesadoDTO.getRestringido());
+    nuevoInteresado.setNroLicencia(interesadoDTO.getNroLicencia());
+    nuevoInteresado.setFechaVencimientoLicencia(interesadoDTO.getFechaVencimientoLicencia());
+
+    Interesado savedInteresado = interesadoRepository.save(nuevoInteresado);
+    return savedInteresado.ToDTO();
+  }
+
     public Notificacion notificarInteresado(Integer idEmpleado,Integer idVehiculo,Integer idInteresado,String tipo, String mensaje) {
         Interesado interesado = interesadoRepository.findById(idInteresado)
                 .orElseThrow(() -> new RuntimeException("Interesado no encontrado"));

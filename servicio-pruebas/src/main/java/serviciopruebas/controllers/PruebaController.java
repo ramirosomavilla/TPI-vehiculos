@@ -74,7 +74,7 @@ public class PruebaController {
         PruebaDTO pruebaDTO = pruebaService.finalizar(id, comentarios);
         return ResponseEntity.ok(pruebaDTO);
     }
-
+    //Corregir
     @GetMapping("/vehiculos/{idVehiculo}/en-curso")
     public ResponseEntity<Boolean> vehiculoEnPrueba(@PathVariable Integer idVehiculo) {
         Boolean vehiculoEnPrueba = pruebaService.vehiculoEnPrueba(idVehiculo);
