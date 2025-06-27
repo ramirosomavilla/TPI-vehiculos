@@ -3,26 +3,20 @@ package serviciopruebas.client;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.client.RestTemplate;
 import serviciopruebas.dtos.NotificacionRequestDTO;
 
 @Component
 public class NotificacionClient {
     @Autowired
-    private WebClient.Builder webClientBuilder;
+    private RestTemplate restTemplate;
 
     @Value("${usuarios.service.url}")
     private String usuariosServiceUrl;
 
     public void notificarInteresado(NotificacionRequestDTO notificacionRequest) {
         Integer idInteresado = notificacionRequest.getIdInteresado();
-
-        webClientBuilder.build()
-                .post()
-                .uri(usuariosServiceUrl + "/api/v1/usuarios/interesados/" + idInteresado + "/notificar")
-                .bodyValue(notificacionRequest)
-                .retrieve()
-                .bodyToMono(Void.class)
-                .block();
+        String url = usuariosServiceUrl + "/api/v1/usuarios/interesados/" + idInteresado + "/notificar";
+        restTemplate.postForObject(url, notificacionRequest, Void.class);
     }
 }
