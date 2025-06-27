@@ -1,7 +1,10 @@
 package serviciousuarios.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,4 +31,13 @@ public class EmpleadoController {
   public List<EmpleadoDTO> getAllEmpleados() {
     return empleadoService.getAllEmpleados();
   }
-} 
+
+  @PostMapping
+  @Operation(summary = "Crear un nuevo empleado", description = "Crea un nuevo empleado en el sistema")
+  @ApiResponse(responseCode = "201", description = "Empleado creado exitosamente", content = @Content(schema = @Schema(implementation = EmpleadoDTO.class)))
+  @ApiResponse(responseCode = "400", description = "Datos inválidos")
+  public ResponseEntity<EmpleadoDTO> createEmpleado(@RequestBody EmpleadoDTO empleadoDTO) {
+    EmpleadoDTO createdEmpleado = empleadoService.createEmpleado(empleadoDTO);
+    return ResponseEntity.status(201).body(createdEmpleado);
+  }
+}

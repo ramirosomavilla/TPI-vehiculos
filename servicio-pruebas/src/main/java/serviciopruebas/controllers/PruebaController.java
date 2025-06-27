@@ -34,6 +34,35 @@ public class PruebaController {
         return ResponseEntity.ok(createdPrueba);
     }
 
+    @GetMapping
+    public List<PruebaDTO> getAll() {
+        return pruebaService.findAll().stream().map(this::toDTO).toList();
+    }
+
+    private PruebaDTO toDTO(Prueba prueba) {
+        PruebaDTO dto = new PruebaDTO();
+        dto.setId(prueba.getId());
+        dto.setIdVehiculo(prueba.getIdVehiculo());
+        dto.setIdInteresado(prueba.getIdInteresado());
+        dto.setIdEmpleado(prueba.getIdEmpleado());
+        dto.setFechaHoraInicio(prueba.getFechaHoraInicio());
+        dto.setFechaHoraFin(prueba.getFechaHoraFin());
+        dto.setComentarios(prueba.getComentarios());
+        return dto;
+    }
+
+    private Prueba toEntity(PruebaDTO dto) {
+        Prueba prueba = new Prueba();
+        prueba.setId(dto.getId());
+        prueba.setIdVehiculo(dto.getIdVehiculo());
+        prueba.setIdInteresado(dto.getIdInteresado());
+        prueba.setIdEmpleado(dto.getIdEmpleado());
+        prueba.setFechaHoraInicio(dto.getFechaHoraInicio());
+        prueba.setFechaHoraFin(dto.getFechaHoraFin());
+        prueba.setComentarios(dto.getComentarios());
+        return prueba;
+    }
+
     @GetMapping("/en-curso")
     public ResponseEntity<List<PruebaDTO>> getPruebasEnCurso() {
         List<PruebaDTO> pruebasEnCurso = pruebaService.getPruebasEnCurso();
@@ -46,6 +75,7 @@ public class PruebaController {
         return ResponseEntity.ok(pruebaDTO);
     }
 
+    // Corregir
     @GetMapping("/vehiculos/{idVehiculo}/en-curso")
     public ResponseEntity<Boolean> vehiculoEnPrueba(@PathVariable Integer idVehiculo) {
         Boolean vehiculoEnPrueba = pruebaService.vehiculoEnPrueba(idVehiculo);
@@ -63,4 +93,4 @@ public class PruebaController {
         Prueba pruebaEnCurso = pruebaService.obtenerPruebaEnCursoByVehiculoId(idVehiculo);
         return ResponseEntity.ok(pruebaEnCurso.getIdInteresado());
     }
-} 
+}

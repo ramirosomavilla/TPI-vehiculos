@@ -72,4 +72,15 @@ public class InteresadoController {
       );
       return ResponseEntity.ok(notif);
     }
+
+    @PostMapping
+    @Operation(summary = "Crear un nuevo interesado", description = "Crea un nuevo interesado en el sistema")
+    @ApiResponse(responseCode = "201", description = "Interesado creado exitosamente", content = @Content(schema = @Schema(implementation = InteresadoDTO.class)))
+    @ApiResponse(responseCode = "400", description = "Datos inválidos")
+    public ResponseEntity<InteresadoDTO> createInteresado(@RequestBody InteresadoDTO interesadoDTO) {
+      InteresadoDTO createdInteresado = interesadoService.createInteresado(interesadoDTO);
+      return ResponseEntity.status(201).body(createdInteresado);
+    }
+
+
 }

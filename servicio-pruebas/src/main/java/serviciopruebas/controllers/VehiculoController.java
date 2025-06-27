@@ -24,7 +24,7 @@ public class VehiculoController {
         return vehiculoService.findAll().stream().map(this::toDTO).toList();
     }
 
-    @GetMapping("/api/v1/vehiculos/{id}")
+    @GetMapping("/{id}")
     public VehiculoDTO getById(@PathVariable("id") Integer id) {
         return vehiculoService.findById(id).map(this::toDTO).orElse(null);
     }
@@ -35,7 +35,7 @@ public class VehiculoController {
         return toDTO(vehiculoService.save(v));
     }
 
-    @DeleteMapping("/api/v1/vehiculos/{id}")
+    @DeleteMapping("/{id}")
     public void delete(@PathVariable("id") Integer id) {
         vehiculoService.deleteById(id);
     }
