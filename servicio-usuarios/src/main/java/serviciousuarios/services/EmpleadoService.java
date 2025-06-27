@@ -35,4 +35,38 @@ public class EmpleadoService {
     Empleado savedEmpleado = empleadoRepository.save(nuevoEmpleado);
     return savedEmpleado.toDTO();
   }
+
+  public EmpleadoDTO getEmpleadoById(int legajo) {
+    return empleadoRepository.findById((long) legajo).map(Empleado::toDTO).orElse(null);
+  }
+
+  public EmpleadoDTO updateEmpleado(int legajo, EmpleadoDTO empleadoDTO) {
+    return empleadoRepository.findById((long) legajo).map(empleado -> {
+      empleado.setNombre(empleadoDTO.getNombre());
+      empleado.setApellido(empleadoDTO.getApellido());
+      empleado.setTelefonoContacto(empleadoDTO.getTelefonoContacto());
+      Empleado updated = empleadoRepository.save(empleado);
+      return updated.toDTO();
+    }).orElse(null);
+  }
+
+  public EmpleadoDTO patchEmpleado(int legajo, EmpleadoDTO empleadoDTO) {
+    return empleadoRepository.findById((long) legajo).map(empleado -> {
+      if (empleadoDTO.getNombre() != null)
+        empleado.setNombre(empleadoDTO.getNombre());
+      if (empleadoDTO.getApellido() != null)
+        empleado.setApellido(empleadoDTO.getApellido());
+      if (empleadoDTO.getTelefonoContacto() != null)
+        empleado.setTelefonoContacto(empleadoDTO.getTelefonoContacto());
+      Empleado updated = empleadoRepository.save(empleado);
+      return updated.toDTO();
+    }).orElse(null);
+  }
+
+  public boolean deleteEmpleado(int legajo) {
+    if (!empleadoRepository.existsById((long) legajo))
+      return false;
+    empleadoRepository.deleteById((long) legajo);
+    return true;
+  }
 }

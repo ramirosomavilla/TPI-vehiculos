@@ -35,6 +35,9 @@ public class Notificacion {
     @Column(nullable = false)
     private String mensaje;
 
+    public Notificacion() {
+    }
+
     public Notificacion(Integer idEmpleado, Integer idVehiculo, Integer idInteresado, String tipo, String mensaje) {
         this.idEmpleado = idEmpleado;
         this.idVehiculo = idVehiculo;

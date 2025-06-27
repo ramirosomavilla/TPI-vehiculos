@@ -17,8 +17,8 @@ import serviciousuarios.repositories.NotificacionRepository;
 public class InteresadoService {
   @Autowired
   private InteresadoRepository interesadoRepository;
-    @Autowired
-    private NotificacionRepository notificacionRepository;
+  @Autowired
+  private NotificacionRepository notificacionRepository;
 
   public List<InteresadoDTO> getAllInteresados() {
     List<Interesado> interesados = interesadoRepository.findAll();
@@ -53,7 +53,7 @@ public class InteresadoService {
 
   public void restringir(Integer idUsuario) {
     Interesado interesado = interesadoRepository.findById(idUsuario)
-            .orElseThrow(() -> new RuntimeException("Interesado no encontrado"));
+        .orElseThrow(() -> new RuntimeException("Interesado no encontrado"));
     interesado.setRestringido(1);
     interesadoRepository.save(interesado);
   }
@@ -73,13 +73,60 @@ public class InteresadoService {
     return savedInteresado.ToDTO();
   }
 
-    public Notificacion notificarInteresado(Integer idEmpleado,Integer idVehiculo,Integer idInteresado,String tipo, String mensaje) {
-        Interesado interesado = interesadoRepository.findById(idInteresado)
-                .orElseThrow(() -> new RuntimeException("Interesado no encontrado"));
+  public Notificacion notificarInteresado(Integer idEmpleado, Integer idVehiculo, Integer idInteresado, String tipo,
+      String mensaje) {
+    Interesado interesado = interesadoRepository.findById(idInteresado)
+        .orElseThrow(() -> new RuntimeException("Interesado no encontrado"));
 
-      Notificacion notificacion = new Notificacion(idEmpleado, idVehiculo, idInteresado, tipo, mensaje);
-      notificacionRepository.save(notificacion);
-      return notificacion;
-    }
+    Notificacion notificacion = new Notificacion(idEmpleado, idVehiculo, idInteresado, tipo, mensaje);
+    notificacionRepository.save(notificacion);
+    return notificacion;
+  }
+
+  public InteresadoDTO getInteresadoById(int id) {
+    return interesadoRepository.findById(id).map(Interesado::ToDTO).orElse(null);
+  }
+
+  public InteresadoDTO updateInteresado(int id, InteresadoDTO dto) {
+    return interesadoRepository.findById(id).map(interesado -> {
+      interesado.setTipoDocumento(dto.getTipoDocumento());
+      interesado.setDocumento(dto.getDocumento());
+      interesado.setNombre(dto.getNombre());
+      interesado.setApellido(dto.getApellido());
+      interesado.setRestringido(dto.getRestringido());
+      interesado.setNroLicencia(dto.getNroLicencia());
+      interesado.setFechaVencimientoLicencia(dto.getFechaVencimientoLicencia());
+      Interesado updated = interesadoRepository.save(interesado);
+      return updated.ToDTO();
+    }).orElse(null);
+  }
+
+  public InteresadoDTO patchInteresado(int id, InteresadoDTO dto) {
+    return interesadoRepository.findById(id).map(interesado -> {
+      if (dto.getTipoDocumento() != null)
+        interesado.setTipoDocumento(dto.getTipoDocumento());
+      if (dto.getDocumento() != null)
+        interesado.setDocumento(dto.getDocumento());
+      if (dto.getNombre() != null)
+        interesado.setNombre(dto.getNombre());
+      if (dto.getApellido() != null)
+        interesado.setApellido(dto.getApellido());
+      if (dto.getRestringido() != 0)
+        interesado.setRestringido(dto.getRestringido());
+      if (dto.getNroLicencia() != 0)
+        interesado.setNroLicencia(dto.getNroLicencia());
+      if (dto.getFechaVencimientoLicencia() != null)
+        interesado.setFechaVencimientoLicencia(dto.getFechaVencimientoLicencia());
+      Interesado updated = interesadoRepository.save(interesado);
+      return updated.ToDTO();
+    }).orElse(null);
+  }
+
+  public boolean deleteInteresado(int id) {
+    if (!interesadoRepository.existsById(id))
+      return false;
+    interesadoRepository.deleteById(id);
+    return true;
+  }
 
 }
