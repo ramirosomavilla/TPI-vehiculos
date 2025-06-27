@@ -10,6 +10,11 @@ import java.time.LocalDateTime;
 public class Vehiculo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @TableGenerator(name = "Vehiculos", table = "sqlite_sequence",
+            pkColumnName = "name", valueColumnName = "seq",
+            pkColumnValue="Vehiculos",
+            initialValue=1, allocationSize=1)
+    @Column(name = "id")
     private Integer id;
 
     @Column(nullable = false)

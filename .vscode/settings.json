@@ -1,4 +1,5 @@
 {
   "java.configuration.updateBuildConfiguration": "automatic",
-  "java.configuration.annotationProcessing.enabled": true
+  "java.configuration.annotationProcessing.enabled": true,
+  "java.compile.nullAnalysis.mode": "automatic"
 }

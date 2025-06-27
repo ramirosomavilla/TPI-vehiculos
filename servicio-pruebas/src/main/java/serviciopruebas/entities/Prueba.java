@@ -17,10 +17,7 @@ import serviciopruebas.dtos.PruebaDTO;
 public class Prueba {
     @Id
     @GeneratedValue(generator = "pruebas")
-    @TableGenerator(name = "pruebas", table = "sqlite_sequence",
-            pkColumnName = "name", valueColumnName = "seq",
-            pkColumnValue="Pruebas",
-            initialValue=1, allocationSize=1)
+    @TableGenerator(name = "pruebas", table = "sqlite_sequence", pkColumnName = "name", valueColumnName = "seq", pkColumnValue = "Pruebas", initialValue = 1, allocationSize = 1)
     @Column(name = "id")
     private int id;
 
@@ -44,7 +41,7 @@ public class Prueba {
 
     public PruebaDTO toDTO() {
         PruebaDTO pruebaDTO = new PruebaDTO();
-        pruebaDTO.setId(this.getId());
+        pruebaDTO.setId(this.id);
         pruebaDTO.setIdVehiculo(this.getIdVehiculo());
         pruebaDTO.setIdInteresado(this.getIdInteresado());
         pruebaDTO.setIdEmpleado(this.getIdEmpleado());
