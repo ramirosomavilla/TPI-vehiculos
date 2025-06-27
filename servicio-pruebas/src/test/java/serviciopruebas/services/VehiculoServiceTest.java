@@ -19,6 +19,7 @@ import serviciopruebas.client.InteresadoClient;
 import serviciopruebas.client.NotificacionClient;
 import java.time.LocalDateTime;
 import java.util.*;
+import serviciopruebas.entities.Prueba;
 
 class VehiculoServiceTest {
   @Mock
@@ -123,5 +124,116 @@ class VehiculoServiceTest {
     assertEquals(lat, result.getLatitud());
     assertEquals(lng, result.getLongitud());
     assertEquals(timestamp, result.getFechaUbicacion());
+  }
+
+  @Test
+  void testGuardarPosicion_FueraDeRadio() {
+    int vehiculoId = 1;
+    double lat = 100.0; // fuera del radio
+    double lng = 200.0;
+    LocalDateTime timestamp = LocalDateTime.now();
+    Vehiculo vehiculo = new Vehiculo();
+    vehiculo.setId(vehiculoId);
+    AgencyConfigDTO config = new AgencyConfigDTO();
+    AgencyConfigDTO.Ubicacion ubicacion = new AgencyConfigDTO.Ubicacion();
+    ubicacion.setLatitud(0.0);
+    ubicacion.setLongitud(0.0);
+    config.setUbicacionAgencia(ubicacion);
+    config.setRadioMaximoMetros(1); // radio muy chico
+    config.setZonasPeligrosas(Collections.emptyList());
+    Prueba prueba = new Prueba();
+    prueba.setIdInteresado(2);
+    prueba.setIdEmpleado(3);
+    prueba.setIdVehiculo(vehiculoId);
+    when(vehiculoRepository.findById(vehiculoId)).thenReturn(Optional.of(vehiculo));
+    when(pruebaservice.vehiculoEnPrueba(vehiculoId)).thenReturn(true);
+    when(configClient.obtenerConfiguracionAgencia()).thenReturn(config);
+    when(pruebaservice.obtenerPruebaEnCursoByVehiculoId(vehiculoId)).thenReturn(prueba);
+    doNothing().when(interesadoClient).restringirInteresado(anyInt());
+    doNothing().when(notificacionClient).notificarInteresado(any(NotificacionRequestDTO.class));
+    when(posicionRepository.save(any(Posicion.class))).thenAnswer(invocation -> invocation.getArgument(0));
+    when(vehiculoRepository.save(any(Vehiculo.class))).thenAnswer(invocation -> invocation.getArgument(0));
+    Vehiculo result = vehiculoService.guardarPosicion(vehiculoId, lat, lng, timestamp);
+    assertNotNull(result);
+    verify(interesadoClient, times(1)).restringirInteresado(2);
+    verify(notificacionClient, times(1)).notificarInteresado(any(NotificacionRequestDTO.class));
+  }
+
+  @Test
+  void testGuardarPosicion_EnZonaPeligrosa() {
+    int vehiculoId = 1;
+    double lat = 5.0;
+    double lng = 5.0;
+    LocalDateTime timestamp = LocalDateTime.now();
+    Vehiculo vehiculo = new Vehiculo();
+    vehiculo.setId(vehiculoId);
+    AgencyConfigDTO config = new AgencyConfigDTO();
+    AgencyConfigDTO.Ubicacion ubicacion = new AgencyConfigDTO.Ubicacion();
+    ubicacion.setLatitud(0.0);
+    ubicacion.setLongitud(0.0);
+    config.setUbicacionAgencia(ubicacion);
+    config.setRadioMaximoMetros(1000);
+    AgencyConfigDTO.ZonaPeligrosa zona = new AgencyConfigDTO.ZonaPeligrosa();
+    AgencyConfigDTO.Ubicacion coord = new AgencyConfigDTO.Ubicacion();
+    coord.setLatitud(5.0);
+    coord.setLongitud(5.0);
+    zona.setCoordenadas(coord);
+    zona.setRadioMetros(10);
+    config.setZonasPeligrosas(Collections.singletonList(zona));
+    Prueba prueba = new Prueba();
+    prueba.setIdInteresado(2);
+    prueba.setIdEmpleado(3);
+    prueba.setIdVehiculo(vehiculoId);
+    when(vehiculoRepository.findById(vehiculoId)).thenReturn(Optional.of(vehiculo));
+    when(pruebaservice.vehiculoEnPrueba(vehiculoId)).thenReturn(true);
+    when(configClient.obtenerConfiguracionAgencia()).thenReturn(config);
+    when(pruebaservice.obtenerPruebaEnCursoByVehiculoId(vehiculoId)).thenReturn(prueba);
+    doNothing().when(interesadoClient).restringirInteresado(anyInt());
+    doNothing().when(notificacionClient).notificarInteresado(any(NotificacionRequestDTO.class));
+    when(posicionRepository.save(any(Posicion.class))).thenAnswer(invocation -> invocation.getArgument(0));
+    when(vehiculoRepository.save(any(Vehiculo.class))).thenAnswer(invocation -> invocation.getArgument(0));
+    Vehiculo result = vehiculoService.guardarPosicion(vehiculoId, lat, lng, timestamp);
+    assertNotNull(result);
+    verify(interesadoClient, times(1)).restringirInteresado(2);
+    verify(notificacionClient, times(1)).notificarInteresado(any(NotificacionRequestDTO.class));
+  }
+
+  @Test
+  void testGuardarPosicion_FueraDeRadioYEnZonaPeligrosa() {
+    int vehiculoId = 1;
+    double lat = 100.0;
+    double lng = 100.0;
+    LocalDateTime timestamp = LocalDateTime.now();
+    Vehiculo vehiculo = new Vehiculo();
+    vehiculo.setId(vehiculoId);
+    AgencyConfigDTO config = new AgencyConfigDTO();
+    AgencyConfigDTO.Ubicacion ubicacion = new AgencyConfigDTO.Ubicacion();
+    ubicacion.setLatitud(0.0);
+    ubicacion.setLongitud(0.0);
+    config.setUbicacionAgencia(ubicacion);
+    config.setRadioMaximoMetros(1);
+    AgencyConfigDTO.ZonaPeligrosa zona = new AgencyConfigDTO.ZonaPeligrosa();
+    AgencyConfigDTO.Ubicacion coord = new AgencyConfigDTO.Ubicacion();
+    coord.setLatitud(100.0);
+    coord.setLongitud(100.0);
+    zona.setCoordenadas(coord);
+    zona.setRadioMetros(10);
+    config.setZonasPeligrosas(Collections.singletonList(zona));
+    Prueba prueba = new Prueba();
+    prueba.setIdInteresado(2);
+    prueba.setIdEmpleado(3);
+    prueba.setIdVehiculo(vehiculoId);
+    when(vehiculoRepository.findById(vehiculoId)).thenReturn(Optional.of(vehiculo));
+    when(pruebaservice.vehiculoEnPrueba(vehiculoId)).thenReturn(true);
+    when(configClient.obtenerConfiguracionAgencia()).thenReturn(config);
+    when(pruebaservice.obtenerPruebaEnCursoByVehiculoId(vehiculoId)).thenReturn(prueba);
+    doNothing().when(interesadoClient).restringirInteresado(anyInt());
+    doNothing().when(notificacionClient).notificarInteresado(any(NotificacionRequestDTO.class));
+    when(posicionRepository.save(any(Posicion.class))).thenAnswer(invocation -> invocation.getArgument(0));
+    when(vehiculoRepository.save(any(Vehiculo.class))).thenAnswer(invocation -> invocation.getArgument(0));
+    Vehiculo result = vehiculoService.guardarPosicion(vehiculoId, lat, lng, timestamp);
+    assertNotNull(result);
+    verify(interesadoClient, times(1)).restringirInteresado(2);
+    verify(notificacionClient, times(1)).notificarInteresado(any(NotificacionRequestDTO.class));
   }
 }
