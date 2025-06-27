@@ -13,7 +13,7 @@ import serviciopruebas.entities.Prueba;
 import serviciopruebas.entities.Vehiculo;
 import serviciopruebas.dtos.AgencyConfigDTO;
 import serviciopruebas.dtos.PruebaDTO;
-import serviciopruebas.client.UsuarioClient;
+import serviciopruebas.client.InteresadoClient;
 import serviciopruebas.client.ConfigClient;
 
 @Service
@@ -22,7 +22,7 @@ public class PruebaService {
   private PruebaRepository pruebaRepository;
 
   @Autowired
-  private UsuarioClient usuarioClient;
+  private InteresadoClient interesadoClient;
 
   @Autowired
   private VehiculoRepository vehiculoRepository;
@@ -33,11 +33,11 @@ public class PruebaService {
   public PruebaDTO create(PruebaDTO pruebaDTO) {
     Prueba prueba = pruebaDTO.toEntity();
 
-    if (usuarioClient.interesadoHasExpiredLicense(prueba.getIdInteresado())) {
+    if (interesadoClient.interesadoHasExpiredLicense(prueba.getIdInteresado())) {
       throw new RuntimeException("El usuario tiene una licencia expirada");
     }
 
-    if (usuarioClient.interesadoIsRestricted(prueba.getIdInteresado())) {
+    if (interesadoClient.interesadoIsRestricted(prueba.getIdInteresado())) {
       throw new RuntimeException("El usuario está restringido");
     }
 

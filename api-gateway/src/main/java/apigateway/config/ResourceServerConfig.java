@@ -24,16 +24,19 @@ public class ResourceServerConfig {
   public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
     http
         .authorizeExchange(exchanges -> exchanges
-            .pathMatchers(HttpMethod.GET, "/api/v1/pruebas/**").hasAnyRole("EMPLEADO")
-            .pathMatchers(HttpMethod.POST, "/api/v1/pruebas/**").hasAnyRole("EMPLEADO")
-            .pathMatchers(HttpMethod.GET, "/api/v1/notificaciones/**").hasAnyRole("EMPLEADO")
-            .pathMatchers(HttpMethod.POST, "/api/v1/notificaciones/**").hasAnyRole("EMPLEADO")
-            .pathMatchers(HttpMethod.GET, "/api/v1/usuarios/interesados/**").hasAnyRole("EMPLEADO")
-            .pathMatchers(HttpMethod.POST, "/api/v1/usuarios/interesados/**").hasAnyRole("EMPLEADO")
+            .pathMatchers(HttpMethod.GET, "/api/v1/pruebas/**").hasAnyRole("EMPLEADO", "ADMIN")
+            .pathMatchers(HttpMethod.POST, "/api/v1/pruebas/**").hasAnyRole("EMPLEADO", "ADMIN")
+            .pathMatchers(HttpMethod.PUT, "/api/v1/pruebas/**").hasAnyRole("EMPLEADO", "ADMIN")
+            .pathMatchers(HttpMethod.DELETE, "/api/v1/pruebas/**").hasAnyRole("EMPLEADO", "ADMIN")
+            .pathMatchers(HttpMethod.GET, "/api/v1/notificaciones/**").hasAnyRole("EMPLEADO", "ADMIN")
+            .pathMatchers(HttpMethod.POST, "/api/v1/notificaciones/**").hasAnyRole("EMPLEADO", "ADMIN")
+            .pathMatchers(HttpMethod.PUT, "/api/v1/notificaciones/**").hasAnyRole("EMPLEADO", "ADMIN")
+            .pathMatchers(HttpMethod.DELETE, "/api/v1/notificaciones/**").hasAnyRole("EMPLEADO", "ADMIN")
+            .pathMatchers(HttpMethod.GET, "/api/v1/usuarios/interesados/**").hasAnyRole("EMPLEADO", "ADMIN")
+            .pathMatchers(HttpMethod.POST, "/api/v1/usuarios/interesados/**").hasAnyRole("EMPLEADO", "ADMIN")
+            .pathMatchers(HttpMethod.PUT, "/api/v1/usuarios/interesados/**").hasAnyRole("EMPLEADO", "ADMIN")
+            .pathMatchers(HttpMethod.DELETE, "/api/v1/usuarios/interesados/**").hasAnyRole("EMPLEADO", "ADMIN")
             .pathMatchers(HttpMethod.GET, "/api/v1/reportes/**").hasAnyRole("ADMIN")
-            .pathMatchers(HttpMethod.POST, "/api/v1/reportes/**").hasAnyRole("ADMIN")
-            .pathMatchers(HttpMethod.PUT, "/api/v1/reportes/**").hasAnyRole("ADMIN")
-            .pathMatchers(HttpMethod.DELETE, "/api/v1/reportes/**").hasAnyRole("ADMIN")
             .pathMatchers(HttpMethod.POST, "/api/v1/vehiculos/**").hasAnyRole("VEHICULO")
 
             .anyExchange().authenticated())

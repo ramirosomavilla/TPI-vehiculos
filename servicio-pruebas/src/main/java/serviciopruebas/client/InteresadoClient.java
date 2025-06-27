@@ -17,14 +17,46 @@ public class InteresadoClient {
 
     public void restringirInteresado(Integer idInteresado) {
         try {
-          webClientBuilder.build()
-                  .put()
-                  .uri(usuariosServiceUrl + "/api/v1/usuarios/interesados/"+ idInteresado + "/restringido")
-                  .retrieve()
-                  .bodyToMono(Void.class)
-                  .block();
+            webClientBuilder.build()
+                    .put()
+                    .uri(usuariosServiceUrl + "/api/v1/usuarios/interesados/" + idInteresado + "/restringido")
+                    .retrieve()
+                    .bodyToMono(Void.class)
+                    .block();
         } catch (WebClientResponseException e) {
             throw new RuntimeException("Error al restringir el interesado: " + idInteresado + e.getStatusCode());
+        }
+    }
+
+    public boolean interesadoHasExpiredLicense(int idUsuario) {
+        try {
+            Boolean expired = webClientBuilder.build()
+                    .get()
+                    .uri(usuariosServiceUrl + "/api/v1/usuarios/interesados/" + idUsuario + "/has-expired-license")
+                    .retrieve()
+                    .bodyToMono(Boolean.class)
+                    .block();
+            return expired;
+        } catch (WebClientResponseException.NotFound e) {
+            return false;
+        } catch (WebClientResponseException e) {
+            throw new RuntimeException("Error consultando el servicio de usuarios: " + e.getStatusCode());
+        }
+    }
+
+    public boolean interesadoIsRestricted(int idUsuario) {
+        try {
+            Boolean restricted = webClientBuilder.build()
+                    .get()
+                    .uri(usuariosServiceUrl + "/api/v1/usuarios/interesados/" + idUsuario + "/is-restricted")
+                    .retrieve()
+                    .bodyToMono(Boolean.class)
+                    .block();
+            return restricted;
+        } catch (WebClientResponseException.NotFound e) {
+            return false;
+        } catch (WebClientResponseException e) {
+            throw new RuntimeException("Error consultando el servicio de usuarios: " + e.getStatusCode());
         }
     }
 }
