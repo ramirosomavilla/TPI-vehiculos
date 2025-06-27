@@ -6,10 +6,15 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import serviciopruebas.repositories.VehiculoRepository;
 import serviciopruebas.repositories.PruebaRepository;
 import serviciopruebas.entities.Prueba;
+import serviciopruebas.entities.Vehiculo;
+import serviciopruebas.dtos.AgencyConfigDTO;
 import serviciopruebas.dtos.PruebaDTO;
 import serviciopruebas.client.UsuarioClient;
+import serviciopruebas.client.ConfigClient;
 
 @Service
 public class PruebaService {
@@ -18,6 +23,12 @@ public class PruebaService {
 
   @Autowired
   private UsuarioClient usuarioClient;
+
+  @Autowired
+  private VehiculoRepository vehiculoRepository;
+
+  @Autowired
+  private ConfigClient configClient;
 
   public PruebaDTO create(PruebaDTO pruebaDTO) {
     Prueba prueba = pruebaDTO.toEntity();
@@ -33,6 +44,15 @@ public class PruebaService {
     if (pruebaRepository.existsByIdVehiculoAndFechaHoraFinIsNull(prueba.getIdVehiculo())) {
       throw new RuntimeException("El vehículo ya está siendo utilizado en otra prueba");
     }
+
+    AgencyConfigDTO config = configClient.obtenerConfiguracionAgencia();
+
+    Vehiculo vehiculo = vehiculoRepository.findById(prueba.getIdVehiculo())
+        .orElseThrow(() -> new RuntimeException("Vehiculo no encontrado"));
+    vehiculo.setFechaUbicacion(prueba.getFechaHoraInicio());
+    vehiculo.setLatitud(config.getUbicacionAgencia().getLatitud());
+    vehiculo.setLongitud(config.getUbicacionAgencia().getLongitud());
+    vehiculoRepository.save(vehiculo);
 
     prueba = pruebaRepository.save(prueba);
     return prueba.toDTO();
