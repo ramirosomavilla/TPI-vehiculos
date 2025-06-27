@@ -37,7 +37,7 @@ import servicioreportes.repositories.PosicionRepository;
                     .collect(Collectors.toList());
         }
 
-        public List<IncidenteDTO> listarIncidentesPorEmpleado(Long empleadoId) {
+        public List<IncidenteDTO> listarIncidentesPorEmpleado(int empleadoId) {
             return incidenteRepo.findByEmpleadoId(empleadoId)
                     .stream()
                     .map(IncidenteDTO::toDto)

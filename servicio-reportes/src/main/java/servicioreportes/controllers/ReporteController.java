@@ -28,7 +28,7 @@ public class ReporteController {
         }
 
         @GetMapping("/incidentes/empleado/{idEmpleado}")
-        public List<IncidenteDTO> obtenerIncidentesPorEmpleado(@PathVariable Long idEmpleado) {
+        public List<IncidenteDTO> obtenerIncidentesPorEmpleado(@PathVariable("idEmpleado") Integer idEmpleado) {
             return reporteService.listarIncidentesPorEmpleado(idEmpleado);
         }
 
