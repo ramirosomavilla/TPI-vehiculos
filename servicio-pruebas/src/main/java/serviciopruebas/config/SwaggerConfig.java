@@ -21,19 +21,16 @@ public class SwaggerConfig {
             .title("API REST Pruebas")
             .version("0.0")
             .description("Spring Boot && OpenAPI API REST Pruebas")
-            .contact(new Contact()
-                .name("Ramiro Somavilla")
-                .email("somavillarami@gmail.com"))
             .license(new License()
                 .name("Apache 2.0")
                 .url("https://www.apache.org/licenses/LICENSE-2.0")))
-            .addSecurityItem(new SecurityRequirement().addList(securitySchemeName))
-            .components(new Components()
-                    .addSecuritySchemes(securitySchemeName,
-                            new SecurityScheme()
-                                    .name("X-Internal-Token")
-                                    .type(SecurityScheme.Type.APIKEY)
-                                    .in(SecurityScheme.In.HEADER)
-                                    .name("X-Internal-Token")));
+        .addSecurityItem(new SecurityRequirement().addList(securitySchemeName))
+        .components(new Components()
+            .addSecuritySchemes(securitySchemeName,
+                new SecurityScheme()
+                    .name("X-Internal-Token")
+                    .type(SecurityScheme.Type.APIKEY)
+                    .in(SecurityScheme.In.HEADER)
+                    .name("X-Internal-Token")));
   }
 }
