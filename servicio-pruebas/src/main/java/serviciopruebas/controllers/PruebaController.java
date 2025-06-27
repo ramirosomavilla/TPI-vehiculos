@@ -51,18 +51,6 @@ public class PruebaController {
         return dto;
     }
 
-    private Prueba toEntity(PruebaDTO dto) {
-        Prueba prueba = new Prueba();
-        prueba.setId(dto.getId());
-        prueba.setIdVehiculo(dto.getIdVehiculo());
-        prueba.setIdInteresado(dto.getIdInteresado());
-        prueba.setIdEmpleado(dto.getIdEmpleado());
-        prueba.setFechaHoraInicio(dto.getFechaHoraInicio());
-        prueba.setFechaHoraFin(dto.getFechaHoraFin());
-        prueba.setComentarios(dto.getComentarios());
-        return prueba;
-    }
-
     @GetMapping("/en-curso")
     public ResponseEntity<List<PruebaDTO>> getPruebasEnCurso() {
         List<PruebaDTO> pruebasEnCurso = pruebaService.getPruebasEnCurso();
@@ -75,7 +63,6 @@ public class PruebaController {
         return ResponseEntity.ok(pruebaDTO);
     }
 
-    // Corregir
     @GetMapping("/vehiculos/{idVehiculo}/en-curso")
     public ResponseEntity<Boolean> vehiculoEnPrueba(@PathVariable Integer idVehiculo) {
         Boolean vehiculoEnPrueba = pruebaService.vehiculoEnPrueba(idVehiculo);
