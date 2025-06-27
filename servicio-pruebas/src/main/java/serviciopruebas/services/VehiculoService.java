@@ -7,8 +7,10 @@ import serviciopruebas.client.InteresadoClient;
 import serviciopruebas.client.NotificacionClient;
 import serviciopruebas.dtos.AgencyConfigDTO;
 import serviciopruebas.dtos.NotificacionRequestDTO;
+import serviciopruebas.entities.Posicion;
 import serviciopruebas.entities.Prueba;
 import serviciopruebas.entities.Vehiculo;
+import serviciopruebas.repositories.PosicionRepository;
 import serviciopruebas.repositories.VehiculoRepository;
 import java.time.LocalDateTime;
 
@@ -19,6 +21,9 @@ import java.util.Optional;
 public class VehiculoService {
     @Autowired
     private VehiculoRepository vehiculoRepository;
+
+    @Autowired
+    private PosicionRepository posicionRepository;
 
     @Autowired
     private PruebaService pruebaservice;
@@ -76,6 +81,13 @@ public class VehiculoService {
 
             System.out.println("Cliente " + pruebaEnCurso.getIdInteresado() + " restringido por infracción geográfica");
         }
+
+        Posicion posicion = new Posicion();
+        posicion.setIdVehiculo(vehiculoId);
+        posicion.setLatitud(latitud);
+        posicion.setLongitud(longitud);
+        posicion.setFechaHora(timestamp);
+        posicionRepository.save(posicion);
 
         vehiculo.setLatitud(latitud);
         vehiculo.setLongitud(longitud);

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.http.ResponseEntity;
 
 import serviciopruebas.dtos.VehiculoDTO;
+import serviciopruebas.dtos.PosicionDTO;
 import serviciopruebas.entities.Vehiculo;
 import serviciopruebas.services.VehiculoService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -72,8 +73,9 @@ public class VehiculoController {
             @ApiResponse(responseCode = "400", description = "Solicitud incorrecta", content = @Content(schema = @Schema(implementation = String.class))),
             @ApiResponse(responseCode = "404", description = "Vehículo no encontrado", content = @Content(schema = @Schema(implementation = String.class)))
     })
-    public VehiculoDTO recibirPosicion(@PathVariable("id") Integer id, @RequestBody VehiculoDTO dto) {
-        return toDTO(vehiculoService.guardarPosicion(id, dto.getLatitud(), dto.getLongitud(), dto.getFechaUbicacion()));
+    public VehiculoDTO recibirPosicion(@PathVariable("id") Integer id, @RequestBody PosicionDTO posicion) {
+        return toDTO(vehiculoService.guardarPosicion(id, posicion.getLatitud(), posicion.getLongitud(),
+                posicion.getFechaHora()));
     }
 
     @PutMapping("/{id}")
