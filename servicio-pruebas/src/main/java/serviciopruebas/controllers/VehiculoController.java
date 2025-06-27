@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.http.ResponseEntity;
 
 import serviciopruebas.dtos.VehiculoDTO;
 import serviciopruebas.entities.Vehiculo;
@@ -73,6 +75,23 @@ public class VehiculoController {
         return toDTO(vehiculoService.guardarPosicion(id, dto.getLatitud(), dto.getLongitud(), dto.getFechaUbicacion()));
     }
 
+    @PutMapping("/{id}")
+    @Operation(summary = "Actualizar vehículo", description = "Actualiza los datos de un vehículo existente por su ID.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Vehículo actualizado exitosamente", content = @Content(schema = @Schema(implementation = VehiculoDTO.class))),
+            @ApiResponse(responseCode = "404", description = "Vehículo no encontrado", content = @Content(schema = @Schema(implementation = String.class)))
+    })
+    public ResponseEntity<VehiculoDTO> update(@PathVariable("id") Integer id, @RequestBody VehiculoDTO dto) {
+        return vehiculoService.findById(id)
+                .map(existing -> {
+                    Vehiculo v = toEntity(dto);
+                    v.setId(id);
+                    Vehiculo updated = vehiculoService.save(v);
+                    return ResponseEntity.ok(toDTO(updated));
+                })
+                .orElse(ResponseEntity.notFound().build());
+    }
+
     private VehiculoDTO toDTO(Vehiculo v) {
         VehiculoDTO dto = new VehiculoDTO();
         dto.setId(v.getId());
@@ -87,7 +106,6 @@ public class VehiculoController {
 
     private Vehiculo toEntity(VehiculoDTO dto) {
         Vehiculo v = new Vehiculo();
-        v.setId(dto.getId());
         v.setPatente(dto.getPatente());
         v.setIdModelo(dto.getIdModelo());
         v.setAnio(dto.getAnio());

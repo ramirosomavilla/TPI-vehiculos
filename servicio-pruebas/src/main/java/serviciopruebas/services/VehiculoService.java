@@ -2,7 +2,6 @@ package serviciopruebas.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.cors.CorsConfigurationSource;
 import serviciopruebas.client.ConfigClient;
 import serviciopruebas.client.InteresadoClient;
 import serviciopruebas.client.NotificacionClient;
@@ -33,9 +32,6 @@ public class VehiculoService {
     @Autowired
     private NotificacionClient notificacionClient;
 
-    @Autowired
-    private CorsConfigurationSource corsConfigurationSource;
-
     public List<Vehiculo> findAll() {
         return vehiculoRepository.findAll();
     }
@@ -45,7 +41,7 @@ public class VehiculoService {
     }
 
     public Vehiculo save(Vehiculo vehiculo) {
-        return vehiculoRepository.save(vehiculo);
+        return vehiculoRepository.saveAndFlush(vehiculo);
     }
 
     public void deleteById(Integer id) {
@@ -53,7 +49,8 @@ public class VehiculoService {
     }
 
     public Vehiculo guardarPosicion(Integer vehiculoId, Double latitud, Double longitud, LocalDateTime timestamp) {
-        Vehiculo vehiculo = vehiculoRepository.findById(vehiculoId).orElseThrow(() -> new RuntimeException("Vehiculo no encontrado"));
+        Vehiculo vehiculo = vehiculoRepository.findById(vehiculoId)
+                .orElseThrow(() -> new RuntimeException("Vehiculo no encontrado"));
         if (!pruebaservice.vehiculoEnPrueba(vehiculoId)) {
             throw new RuntimeException("El vehículo no está en prueba");
         }
@@ -65,17 +62,16 @@ public class VehiculoService {
         boolean fueraDeRadio = !estaDentroDelRadio(latitud, longitud, config);
         boolean enZonaPeligrosa = estaEnZonaPeligrosa(latitud, longitud, config);
 
-        if(fueraDeRadio || enZonaPeligrosa) {
+        if (fueraDeRadio || enZonaPeligrosa) {
             Prueba pruebaEnCurso = pruebaservice.obtenerPruebaEnCursoByVehiculoId(vehiculoId);
             interesadoClient.restringirInteresado(pruebaEnCurso.getIdInteresado());
 
             NotificacionRequestDTO notificacionRequest = new NotificacionRequestDTO(
-                pruebaEnCurso.getIdEmpleado(),
-                pruebaEnCurso.getIdVehiculo(),
-                pruebaEnCurso.getIdInteresado(),
-                "Restricción Geográfica",
-                "El vehículo ha sido ubicado fuera del radio permitido o en una zona peligrosa. El interesado ha sido restringido."
-            );
+                    pruebaEnCurso.getIdEmpleado(),
+                    pruebaEnCurso.getIdVehiculo(),
+                    pruebaEnCurso.getIdInteresado(),
+                    "Restricción Geográfica",
+                    "El vehículo ha sido ubicado fuera del radio permitido o en una zona peligrosa. El interesado ha sido restringido.");
             notificacionClient.notificarInteresado(notificacionRequest);
 
             System.out.println("Cliente " + pruebaEnCurso.getIdInteresado() + " restringido por infracción geográfica");
@@ -103,4 +99,4 @@ public class VehiculoService {
             return distancia <= zona.getRadioMetros();
         });
     }
-} 
+}

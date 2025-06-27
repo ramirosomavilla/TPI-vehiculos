@@ -17,6 +17,7 @@ public class PruebaDTO {
 
   public Prueba toEntity() {
     Prueba prueba = new Prueba();
+    prueba.setId(this.getId());
     prueba.setIdVehiculo(this.getIdVehiculo());
     prueba.setIdInteresado(this.getIdInteresado());
     prueba.setIdEmpleado(this.getIdEmpleado());

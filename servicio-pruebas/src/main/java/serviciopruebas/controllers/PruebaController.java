@@ -47,7 +47,6 @@ public class PruebaController {
 
     private PruebaDTO toDTO(Prueba prueba) {
         PruebaDTO dto = new PruebaDTO();
-        dto.setId(prueba.getId());
         dto.setIdVehiculo(prueba.getIdVehiculo());
         dto.setIdInteresado(prueba.getIdInteresado());
         dto.setIdEmpleado(prueba.getIdEmpleado());

@@ -13,4 +13,4 @@ public class VehiculoDTO {
     private Double latitud;
     private Double longitud;
     private LocalDateTime fechaUbicacion;
-} 
+}
