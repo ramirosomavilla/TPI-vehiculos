@@ -13,16 +13,15 @@ public class Posicion {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "id_vehiculo", nullable=false)
+    @Column(name = "id_vehiculo", nullable = false)
     private int vehiculoId;
 
-    @Column(name = "fecha_hora", nullable=false)
+    @Column(name = "fecha_hora", nullable = false)
     private LocalDateTime fechaHora;
 
-    @Column(nullable=false)
+    @Column(nullable = false)
     private Double latitud;
 
-    @Column(nullable=false)
+    @Column(nullable = false)
     private Double longitud;
 }
-
