@@ -62,4 +62,9 @@ public class PruebaService {
     return pruebaRepository.findByIdVehiculoAndFechaHoraFinIsNull(idVehiculo)
             .orElseThrow(() -> new RuntimeException("No hay prueba en curso para el vehículo con ID: " + idVehiculo));
   }
+
+  public List<PruebaDTO> pruebasPorVehiculo(Integer idVehiculo) {
+    List<Prueba> pruebas = pruebaRepository.findByIdVehiculo(idVehiculo);
+    return pruebas.stream().map(Prueba::toDTO).collect(Collectors.toList());
+  }
 }

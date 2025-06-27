@@ -17,10 +17,14 @@ public class PruebaClient {
     @Value("${pruebas.service.url}")
     private String configServiceUrl;
 
-    public List<PruebaDTO> obtenerPruebasPorVehiculo(Long vehiculoId) {
+    @Value("${pruebas.service.token}")
+    private String token;
+
+    public List<PruebaDTO> obtenerPruebasPorVehiculo(Integer vehiculoId) {
         return webClientBuilder.build()
                 .get()
-                .uri(configServiceUrl + "/pruebas/vehiculo/" + vehiculoId)
+                .uri(configServiceUrl + "/vehiculos/" + vehiculoId)
+                .header("Authorization", "Bearer " + token)
                 .retrieve()
                 .bodyToFlux(PruebaDTO.class)
                 .collectList()

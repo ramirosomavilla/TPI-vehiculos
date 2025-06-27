@@ -2,19 +2,19 @@ package servicioreportes.entities;
 
 import java.time.LocalDateTime;
 import jakarta.persistence.*;
-
-import java.time.LocalDateTime;
+import lombok.Data;
 
 @Entity
 @Table(name = "Posiciones")
+@Data
 public class Posicion {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "vehiculo_id", nullable=false)
-    private Long vehiculoId;
+    @Column(name = "id_vehiculo", nullable=false)
+    private int vehiculoId;
 
     @Column(name = "fecha_hora", nullable=false)
     private LocalDateTime fechaHora;
@@ -24,14 +24,5 @@ public class Posicion {
 
     @Column(nullable=false)
     private Double longitud;
-
-    // getters y setters
-
-    public Double getLatitud() { return latitud; }
-    public void setLatitud(Double latitud) { this.latitud = latitud; }
-
-    public Double getLongitud() { return longitud; }
-    public void setLongitud(Double longitud) { this.longitud = longitud; }
-
 }
 

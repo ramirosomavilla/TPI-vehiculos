@@ -34,12 +34,6 @@ public class PruebaController {
         return ResponseEntity.ok(createdPrueba);
     }
 
-    @GetMapping
-    public String test() {
-        logger.info("¡Petición GET recibida en /pruebas!");
-        return "Servicio de pruebas activo";
-    }
-
     @GetMapping("/en-curso")
     public ResponseEntity<List<PruebaDTO>> getPruebasEnCurso() {
         List<PruebaDTO> pruebasEnCurso = pruebaService.getPruebasEnCurso();
@@ -56,6 +50,12 @@ public class PruebaController {
     public ResponseEntity<Boolean> vehiculoEnPrueba(@PathVariable Integer idVehiculo) {
         Boolean vehiculoEnPrueba = pruebaService.vehiculoEnPrueba(idVehiculo);
         return ResponseEntity.ok(vehiculoEnPrueba);
+    }
+
+    @GetMapping("/vehiculos/{idVehiculo}")
+    public ResponseEntity<List<PruebaDTO>> pruebasPorVehiculo(@PathVariable Integer idVehiculo) {
+        List<PruebaDTO> pruebasPorVehiculo = pruebaService.pruebasPorVehiculo(idVehiculo);
+        return ResponseEntity.ok(pruebasPorVehiculo);
     }
 
     @GetMapping("/vehiculos/{idVehiculo}/interesado")

@@ -47,11 +47,10 @@ import servicioreportes.repositories.PosicionRepository;
         // 2. Kilómetros
 
         public KilometrosDTO calcularKilometrosRecorridos(
-                Long vehiculoId, String desde, String hasta) {
+                Integer vehiculoId, String desde, String hasta) {
 
-            DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS");
-            LocalDateTime inicio = LocalDateTime.parse(desde, fmt);
-            LocalDateTime fin = LocalDateTime.parse(hasta, fmt);
+            LocalDateTime inicio = parseFechaFlexible(desde);
+            LocalDateTime fin = parseFechaFlexible(hasta);
 
             List<Posicion> lista = posicionRepo
                     .findByVehiculoIdAndFechas(vehiculoId, inicio, fin);
@@ -61,6 +60,22 @@ import servicioreportes.repositories.PosicionRepository;
                 total += haversine(lista.get(i - 1), lista.get(i));
             }
             return new KilometrosDTO(vehiculoId, total);
+        }
+
+        private LocalDateTime parseFechaFlexible(String fecha) {
+            DateTimeFormatter[] formatters = new DateTimeFormatter[] {
+                DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS"),
+                DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"),
+                DateTimeFormatter.ofPattern("yyyy-MM-dd")
+            };
+            for (DateTimeFormatter fmt : formatters) {
+                try {
+                    return LocalDateTime.parse(fecha, fmt);
+                } catch (Exception e) {
+                    // Intenta el siguiente formato
+                }
+            }
+            throw new RuntimeException("Formato de fecha no soportado: " + fecha);
         }
 
         private double haversine(Posicion p1, Posicion p2) {
@@ -75,7 +90,7 @@ import servicioreportes.repositories.PosicionRepository;
             return R * c;
         }
 
-        public List<PruebaDTO> listarPruebasPorVehiculo(Long vehiculoId) {
+        public List<PruebaDTO> listarPruebasPorVehiculo(Integer vehiculoId) {
             return pruebaClient.obtenerPruebasPorVehiculo(vehiculoId);
         }
 

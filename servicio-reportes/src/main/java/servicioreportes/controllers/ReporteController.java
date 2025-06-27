@@ -34,15 +34,14 @@ public class ReporteController {
 
         @GetMapping("/kilometros")
         public KilometrosDTO obtenerKilometrosVehiculo(
-                @RequestParam Long idVehiculo,
-                @RequestParam String desde,
-                @RequestParam String hasta) {
+                @RequestParam("idVehiculo") Integer idVehiculo,
+                @RequestParam("desde") String desde,
+                @RequestParam("hasta") String hasta) {
             return reporteService.calcularKilometrosRecorridos(idVehiculo, desde, hasta);
         }
-
-
-    @GetMapping("/pruebas/vehiculo/{vehiculoId}")
-    public List<PruebaDTO> obtenerPruebasPorVehiculo(@PathVariable Long idVehiculo) {
-        return reporteService.listarPruebasPorVehiculo(idVehiculo);
-    }
+        
+        @GetMapping("/pruebas/vehiculo/{vehiculoId}")
+        public List<PruebaDTO> obtenerPruebasPorVehiculo(@PathVariable("vehiculoId") Integer vehiculoId) {
+            return reporteService.listarPruebasPorVehiculo(vehiculoId);
+        }
     }

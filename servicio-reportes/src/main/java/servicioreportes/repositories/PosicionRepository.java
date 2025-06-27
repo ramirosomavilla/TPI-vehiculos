@@ -18,7 +18,7 @@ public interface PosicionRepository
             + "AND p.fechaHora BETWEEN :inicio AND :fin "
             + "ORDER BY p.fechaHora ASC")
     List<Posicion> findByVehiculoIdAndFechas(
-            @Param("vehiculoId") Long vehiculoId,
+            @Param("vehiculoId") Integer vehiculoId,
             @Param("inicio")    LocalDateTime inicio,
             @Param("fin")       LocalDateTime fin);
 
