@@ -74,11 +74,18 @@ public class PruebaController {
         PruebaDTO pruebaDTO = pruebaService.finalizar(id, comentarios);
         return ResponseEntity.ok(pruebaDTO);
     }
-    //Corregir
+
+    // Corregir
     @GetMapping("/vehiculos/{idVehiculo}/en-curso")
     public ResponseEntity<Boolean> vehiculoEnPrueba(@PathVariable Integer idVehiculo) {
         Boolean vehiculoEnPrueba = pruebaService.vehiculoEnPrueba(idVehiculo);
         return ResponseEntity.ok(vehiculoEnPrueba);
+    }
+
+    @GetMapping("/vehiculos/{idVehiculo}")
+    public ResponseEntity<List<PruebaDTO>> pruebasPorVehiculo(@PathVariable Integer idVehiculo) {
+        List<PruebaDTO> pruebasPorVehiculo = pruebaService.pruebasPorVehiculo(idVehiculo);
+        return ResponseEntity.ok(pruebasPorVehiculo);
     }
 
     @GetMapping("/vehiculos/{idVehiculo}/interesado")
@@ -86,4 +93,4 @@ public class PruebaController {
         Prueba pruebaEnCurso = pruebaService.obtenerPruebaEnCursoByVehiculoId(idVehiculo);
         return ResponseEntity.ok(pruebaEnCurso.getIdInteresado());
     }
-} 
+}

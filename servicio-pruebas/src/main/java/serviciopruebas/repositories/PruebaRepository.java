@@ -10,4 +10,5 @@ public interface PruebaRepository extends JpaRepository<Prueba, Integer> {
     boolean existsByIdVehiculoAndFechaHoraFinIsNull(Integer vehiculoId);
     List<Prueba> findByFechaHoraFinIsNull();
     Optional<Prueba> findByIdVehiculoAndFechaHoraFinIsNull(Integer vehiculoId);
+    List<Prueba> findByIdVehiculo(Integer vehiculoId);
 }
