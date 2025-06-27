@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.http.ResponseEntity;
 
 import serviciopruebas.dtos.VehiculoDTO;
@@ -87,6 +88,33 @@ public class VehiculoController {
                     Vehiculo v = toEntity(dto);
                     v.setId(id);
                     Vehiculo updated = vehiculoService.save(v);
+                    return ResponseEntity.ok(toDTO(updated));
+                })
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @PatchMapping("/{id}")
+    @Operation(summary = "Actualizar parcialmente vehículo", description = "Actualiza parcialmente los datos de un vehículo existente por su ID. Solo los campos no nulos serán modificados.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Vehículo actualizado exitosamente", content = @Content(schema = @Schema(implementation = VehiculoDTO.class))),
+            @ApiResponse(responseCode = "404", description = "Vehículo no encontrado", content = @Content(schema = @Schema(implementation = String.class)))
+    })
+    public ResponseEntity<VehiculoDTO> partialUpdate(@PathVariable("id") Integer id, @RequestBody VehiculoDTO dto) {
+        return vehiculoService.findById(id)
+                .map(existing -> {
+                    if (dto.getPatente() != null)
+                        existing.setPatente(dto.getPatente());
+                    if (dto.getIdModelo() != null)
+                        existing.setIdModelo(dto.getIdModelo());
+                    if (dto.getAnio() != null)
+                        existing.setAnio(dto.getAnio());
+                    if (dto.getLatitud() != null)
+                        existing.setLatitud(dto.getLatitud());
+                    if (dto.getLongitud() != null)
+                        existing.setLongitud(dto.getLongitud());
+                    if (dto.getFechaUbicacion() != null)
+                        existing.setFechaUbicacion(dto.getFechaUbicacion());
+                    Vehiculo updated = vehiculoService.save(existing);
                     return ResponseEntity.ok(toDTO(updated));
                 })
                 .orElse(ResponseEntity.notFound().build());
