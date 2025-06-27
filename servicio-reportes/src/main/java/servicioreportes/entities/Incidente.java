@@ -1,19 +1,22 @@
 package servicioreportes.entities;
 
 import jakarta.persistence.*;
+import lombok.Data;
+
 import java.time.LocalDateTime;
 
 
 @Entity
 @Table(name = "incidentes")
+@Data
 public class Incidente {
 
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
-        private Long id;
+        private int id;
 
         @Column(name = "empleado_id", nullable=false)
-        private Long empleadoId;
+        private int empleadoId;
 
         @Column(nullable=false)
         private String descripcion;
@@ -21,17 +24,6 @@ public class Incidente {
         @Column(nullable=false)
         private LocalDateTime fecha;
 
-        // Getters y Setters
-
-        public Long getId() { return id; }
-        public void setId(Long id) { this.id = id; }
-
-        public Long getEmpleadoId() { return empleadoId; }
-        public void setEmpleadoId(Long empleadoId) { this.empleadoId = empleadoId; }
-
-        public String getDescripcion() { return descripcion; }
-        public void setDescripcion(String descripcion) { this.descripcion = descripcion; }
-
-        public LocalDateTime getFecha() { return fecha; }
-        public void setFecha(LocalDateTime fecha) { this.fecha = fecha; }
+        @Column(name = "prueba_id", nullable=false)
+        private int pruebaId;
     }

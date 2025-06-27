@@ -1,0 +1,13 @@
+/Users/ramirosomavilla/Documents/2 - Facultad/TPI-Backend/TPI-vehiculos/servicio-reportes/src/main/java/servicioreportes/ServicioReportesApplication.java
+/Users/ramirosomavilla/Documents/2 - Facultad/TPI-Backend/TPI-vehiculos/servicio-reportes/src/main/java/servicioreportes/client/PruebaClient.java
+/Users/ramirosomavilla/Documents/2 - Facultad/TPI-Backend/TPI-vehiculos/servicio-reportes/src/main/java/servicioreportes/controllers/ReporteController.java
+/Users/ramirosomavilla/Documents/2 - Facultad/TPI-Backend/TPI-vehiculos/servicio-reportes/src/main/java/servicioreportes/dtos/EmpleadoDTO.java
+/Users/ramirosomavilla/Documents/2 - Facultad/TPI-Backend/TPI-vehiculos/servicio-reportes/src/main/java/servicioreportes/dtos/IncidenteDTO.java
+/Users/ramirosomavilla/Documents/2 - Facultad/TPI-Backend/TPI-vehiculos/servicio-reportes/src/main/java/servicioreportes/dtos/KilometrosDTO.java
+/Users/ramirosomavilla/Documents/2 - Facultad/TPI-Backend/TPI-vehiculos/servicio-reportes/src/main/java/servicioreportes/dtos/PruebaDTO.java
+/Users/ramirosomavilla/Documents/2 - Facultad/TPI-Backend/TPI-vehiculos/servicio-reportes/src/main/java/servicioreportes/entities/Empleado.java
+/Users/ramirosomavilla/Documents/2 - Facultad/TPI-Backend/TPI-vehiculos/servicio-reportes/src/main/java/servicioreportes/entities/Incidente.java
+/Users/ramirosomavilla/Documents/2 - Facultad/TPI-Backend/TPI-vehiculos/servicio-reportes/src/main/java/servicioreportes/entities/Posicion.java
+/Users/ramirosomavilla/Documents/2 - Facultad/TPI-Backend/TPI-vehiculos/servicio-reportes/src/main/java/servicioreportes/repositories/IncidenteRepository.java
+/Users/ramirosomavilla/Documents/2 - Facultad/TPI-Backend/TPI-vehiculos/servicio-reportes/src/main/java/servicioreportes/repositories/PosicionRepository.java
+/Users/ramirosomavilla/Documents/2 - Facultad/TPI-Backend/TPI-vehiculos/servicio-reportes/src/main/java/servicioreportes/services/ReporteServices.java
