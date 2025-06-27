@@ -42,7 +42,6 @@ public class PruebaService {
     return pruebaRepository.findAll();
   }
 
-
   public List<PruebaDTO> getPruebasEnCurso() {
     List<Prueba> pruebas = pruebaRepository.findByFechaHoraFinIsNull();
     return pruebas.stream().map(Prueba::toDTO).collect(Collectors.toList());
@@ -65,11 +64,43 @@ public class PruebaService {
 
   public Prueba obtenerPruebaEnCursoByVehiculoId(Integer idVehiculo) {
     return pruebaRepository.findByIdVehiculoAndFechaHoraFinIsNull(idVehiculo)
-            .orElseThrow(() -> new RuntimeException("No hay prueba en curso para el vehículo con ID: " + idVehiculo));
+        .orElseThrow(() -> new RuntimeException("No hay prueba en curso para el vehículo con ID: " + idVehiculo));
   }
 
   public List<PruebaDTO> pruebasPorVehiculo(Integer idVehiculo) {
     List<Prueba> pruebas = pruebaRepository.findByIdVehiculo(idVehiculo);
     return pruebas.stream().map(Prueba::toDTO).collect(Collectors.toList());
+  }
+
+  public void deleteById(Integer id) {
+    pruebaRepository.deleteById(id);
+  }
+
+  public Prueba update(Integer id, PruebaDTO dto) {
+    Prueba prueba = pruebaRepository.findById(id).orElseThrow(() -> new RuntimeException("Prueba no encontrada"));
+    prueba.setIdVehiculo(dto.getIdVehiculo());
+    prueba.setIdInteresado(dto.getIdInteresado());
+    prueba.setIdEmpleado(dto.getIdEmpleado());
+    prueba.setFechaHoraInicio(dto.getFechaHoraInicio());
+    prueba.setFechaHoraFin(dto.getFechaHoraFin());
+    prueba.setComentarios(dto.getComentarios());
+    return pruebaRepository.save(prueba);
+  }
+
+  public Prueba partialUpdate(Integer id, PruebaDTO dto) {
+    Prueba prueba = pruebaRepository.findById(id).orElseThrow(() -> new RuntimeException("Prueba no encontrada"));
+    if (dto.getIdVehiculo() != null)
+      prueba.setIdVehiculo(dto.getIdVehiculo());
+    if (dto.getIdInteresado() != null)
+      prueba.setIdInteresado(dto.getIdInteresado());
+    if (dto.getIdEmpleado() != null)
+      prueba.setIdEmpleado(dto.getIdEmpleado());
+    if (dto.getFechaHoraInicio() != null)
+      prueba.setFechaHoraInicio(dto.getFechaHoraInicio());
+    if (dto.getFechaHoraFin() != null)
+      prueba.setFechaHoraFin(dto.getFechaHoraFin());
+    if (dto.getComentarios() != null)
+      prueba.setComentarios(dto.getComentarios());
+    return pruebaRepository.save(prueba);
   }
 }

@@ -4,12 +4,15 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.PatchMapping;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -47,6 +50,7 @@ public class PruebaController {
 
     private PruebaDTO toDTO(Prueba prueba) {
         PruebaDTO dto = new PruebaDTO();
+        dto.setId(prueba.getId());
         dto.setIdVehiculo(prueba.getIdVehiculo());
         dto.setIdInteresado(prueba.getIdInteresado());
         dto.setIdEmpleado(prueba.getIdEmpleado());
@@ -107,5 +111,38 @@ public class PruebaController {
     public ResponseEntity<Integer> obtenerInteresadoDeVehiculoEnPrueba(@PathVariable Integer idVehiculo) {
         Prueba pruebaEnCurso = pruebaService.obtenerPruebaEnCursoByVehiculoId(idVehiculo);
         return ResponseEntity.ok(pruebaEnCurso.getIdInteresado());
+    }
+
+    @DeleteMapping("/{id}")
+    @Operation(summary = "Eliminar prueba", description = "Elimina la prueba especificada por su ID.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Prueba eliminada exitosamente"),
+            @ApiResponse(responseCode = "404", description = "Prueba no encontrada", content = @Content(schema = @Schema(implementation = String.class)))
+    })
+    public ResponseEntity<Void> delete(@PathVariable Integer id) {
+        pruebaService.deleteById(id);
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/{id}")
+    @Operation(summary = "Actualizar prueba", description = "Actualiza todos los campos de una prueba existente por su ID.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Prueba actualizada exitosamente", content = @Content(schema = @Schema(implementation = PruebaDTO.class))),
+            @ApiResponse(responseCode = "404", description = "Prueba no encontrada", content = @Content(schema = @Schema(implementation = String.class)))
+    })
+    public ResponseEntity<PruebaDTO> update(@PathVariable Integer id, @RequestBody PruebaDTO dto) {
+        Prueba updated = pruebaService.update(id, dto);
+        return ResponseEntity.ok(toDTO(updated));
+    }
+
+    @PatchMapping("/{id}")
+    @Operation(summary = "Actualizar parcialmente prueba", description = "Actualiza parcialmente los campos de una prueba existente por su ID. Solo los campos no nulos serán modificados.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Prueba actualizada exitosamente", content = @Content(schema = @Schema(implementation = PruebaDTO.class))),
+            @ApiResponse(responseCode = "404", description = "Prueba no encontrada", content = @Content(schema = @Schema(implementation = String.class)))
+    })
+    public ResponseEntity<PruebaDTO> partialUpdate(@PathVariable Integer id, @RequestBody PruebaDTO dto) {
+        Prueba updated = pruebaService.partialUpdate(id, dto);
+        return ResponseEntity.ok(toDTO(updated));
     }
 }
