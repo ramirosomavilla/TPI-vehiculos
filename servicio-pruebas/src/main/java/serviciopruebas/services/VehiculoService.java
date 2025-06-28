@@ -6,11 +6,14 @@ import serviciopruebas.client.ConfigClient;
 import serviciopruebas.client.InteresadoClient;
 import serviciopruebas.client.NotificacionClient;
 import serviciopruebas.dtos.AgencyConfigDTO;
+import serviciopruebas.dtos.IncidenteDTO;
 import serviciopruebas.dtos.NotificacionRequestDTO;
 import serviciopruebas.entities.Posicion;
 import serviciopruebas.entities.Prueba;
 import serviciopruebas.entities.Vehiculo;
+import serviciopruebas.entities.Incidente;
 import serviciopruebas.repositories.PosicionRepository;
+import serviciopruebas.repositories.IncidenteRepository;
 import serviciopruebas.repositories.VehiculoRepository;
 import java.time.LocalDateTime;
 
@@ -36,6 +39,9 @@ public class VehiculoService {
 
     @Autowired
     private NotificacionClient notificacionClient;
+
+    @Autowired
+    private IncidenteRepository incidenteRepository;
 
     public List<Vehiculo> findAll() {
         return vehiculoRepository.findAll();
@@ -78,6 +84,15 @@ public class VehiculoService {
                     "Restricción Geográfica",
                     "El vehículo ha sido ubicado fuera del radio permitido o en una zona peligrosa. El interesado ha sido restringido.");
             notificacionClient.notificarInteresado(notificacionRequest);
+
+            Incidente incidente = new Incidente();
+            incidente.setEmpleadoId(pruebaEnCurso.getIdEmpleado());
+            incidente.setDescripcion(
+                    "El vehículo ha sido ubicado fuera del radio permitido o en una zona peligrosa. El interesado ha sido restringido.");
+            incidente.setFecha(pruebaEnCurso.getFechaHoraInicio());
+            incidente.setPruebaId(pruebaEnCurso.getId());
+
+            incidenteRepository.save(incidente);
 
             System.out.println("Cliente " + pruebaEnCurso.getIdInteresado() + " restringido por infracción geográfica");
         }
